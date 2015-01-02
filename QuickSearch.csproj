@@ -56,6 +56,7 @@
     <None Include="GameData\QuickSearch\Plugins\QuickSearch.dll" />
     <None Include="GameData\QuickSearch\Textures\icon.png" />
     <None Include="GameData\QuickSearch\Textures\iconSelected.png" />
+    <None Include="icon.xcf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="GameData\" />
