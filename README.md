@@ -43,6 +43,7 @@ Initial release
 
 #### Thanks!
 
+- to Borisbee to have requested this mod,
 - to BlackNecro for his awesome PartCatalog,
 - to Crzyrndm for his Filter Extensions,
 - to Banbury for his Part Search,
