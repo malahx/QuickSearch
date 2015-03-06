@@ -16,5 +16,6 @@ Global
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = QuickSearch.csproj
+		version = 1.10
 	EndGlobalSection
 EndGlobal

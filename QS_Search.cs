@@ -66,9 +66,23 @@ namespace QuickSearch {
 			return _partinfo;
 		}
 
+		private static string ShipInfo(ShipTemplate ship) {
+			string _shipinfo = string.Empty;
+			if (ship.shipName != null) {
+				_shipinfo += ship.shipName + " ";
+			}
+			if (ship.shipDescription != null) {
+				_shipinfo += ship.shipDescription + " ";
+			}
+			return _shipinfo;
+		}
+
 		internal static bool FindPart(AvailablePart part) {
 			if (part.category == PartCategories.none || part.TechRequired == "unassigned" || part == null) {
 				return false;
+			}
+			if (Text == string.Empty) {
+				return true;
 			}
 			string _partinfo = PartInfo (part);
 			if (_partinfo == string.Empty) {
@@ -79,30 +93,30 @@ namespace QuickSearch {
 				try {
 					return Regex.IsMatch (_partinfo, CleanInput(_Text));
 				} catch {
-					return FindStandard (_partinfo, CleanRegex(_Text));
+					return FindStandard (_partinfo, CleanInput(_Text));
 				}
 			} else {
 				return FindStandard (_partinfo, Text);
 			}
 		}
 
-		internal static bool FindStandard(string PartInfo, string Search) {
+		internal static bool FindStandard(string Infos, string Search) {
 			bool _Return = false;
 			string[] _OrSplits = Search.ToLower().Split('|');
-			PartInfo = PartInfo.ToLower ();
+			Infos = Infos.ToLower ();
 			foreach (string _OrSplit in _OrSplits) {
 				string[] _AndSplits = _OrSplit.Split('&');
 				if (_AndSplits.Length > 1) {
 					bool _AndReturn = true;
 					foreach (string _AndSplit in _AndSplits) {
-						_AndReturn = _AndReturn && PartInfo.Contains (_AndSplit);
+						_AndReturn = _AndReturn && Infos.Contains (_AndSplit);
 					}
 					_Return = _Return || _AndReturn;
 					if (_Return) {
 						break;
 					}
 				} else {
-					if (PartInfo.Contains (_OrSplit)) {
+					if (Infos.Contains (_OrSplit)) {
 						_Return = true;
 						break;
 					}
@@ -111,16 +125,39 @@ namespace QuickSearch {
 			return _Return;
 		}
 
-		// From https://msdn.microsoft.com/en-us/library/844skk0h(v=vs.90).aspx
-		internal static string CleanInput(string strIn) {
-			// Replace invalid characters with empty strings. 
-			return Regex.Replace(strIn, @"[^\w\.@\-|&/()\[\]\+?,;:/\*µ\^\$=]", string.Empty); 
+		internal static bool FindSubassembly(ShipTemplate ship) {
+			if (ship == null) {
+				return false;
+			}
+			if (Text == string.Empty) {
+				return true;
+			}
+			string _shipinfo = ShipInfo (ship);
+			if (_shipinfo == string.Empty) {
+				return false;
+			}
+			string _Text = Regex.Replace (Text, @"^/([^/]+)/$", "$1");
+			if (_Text != Text) {
+				try {
+					return Regex.IsMatch (_shipinfo, CleanInput(_Text));
+				} catch {
+					return FindStandard (_shipinfo, CleanInput(_Text));
+				}
+			} else {
+				return FindStandard (_shipinfo, Text);
+			}
 		}
 
 		// From https://msdn.microsoft.com/en-us/library/844skk0h(v=vs.90).aspx
+		internal static string CleanInput(string strIn) {
+			// Replace invalid characters with empty strings. 
+			return Regex.Replace(strIn, @"[^\w\.@-|&/()\[\]\+?,;:/\*µ\^\$=\ ]", string.Empty); 
+		}
+
+		/*// From https://msdn.microsoft.com/en-us/library/844skk0h(v=vs.90).aspx
 		internal static string CleanRegex(string strIn) {
 			// Replace invalid characters with empty strings. 
-			return Regex.Replace(strIn, @"[^\w@\-|&]", string.Empty); 
-		}
+			return Regex.Replace(strIn, @"[^\w@-\ |&\.,]", string.Empty); 
+		}*/
 	}
 }

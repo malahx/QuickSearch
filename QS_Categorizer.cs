@@ -103,7 +103,7 @@ namespace QuickSearch {
 		}
 
 		internal static void Populate() {
-			List<string> _items = QPersistent.GetItem;
+			List<string> _items = QPersistent.GetItems;
 			foreach (string _item in _items) {
 				EditorPartList.State _displayType = (QPersistent.GetDisplayType (_item) == EditorPartList.State.PartsList.ToString () ? EditorPartList.State.PartsList : EditorPartList.State.SubassemblyList);
 				AddSubCategory (_item, _displayType, QPersistent.GetColor (_item));
@@ -158,32 +158,57 @@ namespace QuickSearch {
 		}
 
 		// Mettre une sous catégorie à vrai
-		internal static void SubCategorySetTrue(RUIToggleButtonTyped button) {
-			if (button.State != RUIToggleButtonTyped.ButtonState.TRUE) {
-				button.SetTrue (button, RUIToggleButtonTyped.ClickType.FORCED, false);
+		internal static void SubCategorySetTrue(PartCategorizer.Category Filter, PartCategorizer.Category SubCategory) {
+			RUIToggleButtonTyped _button = SubCategory.button.activeButton;
+			if (_button.State != RUIToggleButtonTyped.ButtonState.TRUE) {
+				_button.SetTrue (_button, RUIToggleButtonTyped.ClickType.FORCED, false);
 			}
-			FlipAllSubCategoryButtons (FilterPartSearch, button, true);
+			FlipAllSubCategoryButtons (Filter, _button, true);
 		}
 
-		internal static void Refresh() {
-			PartCategorizer.Instance.SetAdvancedMode ();
-			RUIToggleButtonTyped _btn = FilterPartSearch.button.activeButton;
+		internal static void FilterSetTrue(PartCategorizer.Category Filter) {
+			RUIToggleButtonTyped _btn = Filter.button.activeButton;
 			if (_btn.State != RUIToggleButtonTyped.ButtonState.TRUE) {
 				_btn.SetTrue (_btn, RUIToggleButtonTyped.ClickType.FORCED, false);
 			}
-			FilterPartSearch.FlipAllFilterButtons (_btn, true);
-			FilterPartSearch.FlipAllCategoryButtons (_btn, true);
+			Filter.FlipAllFilterButtons (_btn, true);
+			Filter.FlipAllCategoryButtons (_btn, true);
+		}
+
+		internal static void Refresh() {
+			PartCategorizer.Category _filter = FilterPartSearch;
+			PartCategorizer.Category _subcategory = SubCategoryPartSearch;
+			if (CurrentFilter != null) {
+				if (CurrentFilter.displayType == EditorPartList.State.SubassemblyList) {
+					if (CurrentSubCategory != null) {
+						if (CurrentSubCategory.displayType == EditorPartList.State.SubassemblyList) {
+							_filter = CurrentFilter;
+							_subcategory = CurrentFilter.subcategories[0];
+						}
+					}
+				}
+			}
+			PartCategorizer.Instance.SetAdvancedMode ();
+			FilterSetTrue (_filter);
 			if (QSearch.Text == string.Empty) {
-				SubCategorySetTrue (SubCategoryPartSearch.button.activeButton);
+				SubCategorySetTrue (_filter, _subcategory);
 			} else {
-				PartCategorizer.Category _subCategory = FilterPartSearch.subcategories.Find (s => s.button.categoryName == QSearch.Text);
+				PartCategorizer.Category _subCategory = _filter.subcategories.Find (s => s.button.categoryName == QSearch.Text);
 				if (_subCategory != null) {
-					SubCategorySetTrue (_subCategory.button.activeButton);
+					SubCategorySetTrue (_filter, _subCategory);
 				} else {
-					SubCategorySetTrue (SubCategoryPartSearch.button.activeButton);
+					SubCategorySetTrue (_filter, _subcategory);
 				}
 			}
 			EditorPartList.Instance.Refresh ();
+		}
+			
+		internal static void OnGUI() {
+			CurrentFilter = QCategory.FilterSelected;
+			if (CurrentFilter != null) {
+				CurrentSubCategory = QCategory.CategorySelected (CurrentFilter);
+				SaveLastCategory (CurrentFilter, CurrentSubCategory);
+			}
 		}
 	}
 }

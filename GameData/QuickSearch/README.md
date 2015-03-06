@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #### What is it?
 
-QuickSearch is a small plugin which adds the possibility to search parts on the editor.
+QuickSearch is a small plugin which adds the possibility to search parts and subassembly on the editor.
 (Yet another parts search plugin ;))
 
 #### How to install it?
@@ -31,6 +31,10 @@ Delete the QuickSearch folder in your KSP/GameData folder.
 
 #### Changelog
 
+v1.10 - 2015.03.06
+* New: Added a subassembly search,
+* Fix: Corrected the search to accept a space.
+
 v1.00 - 2015.02.17
 * New: Added logical parameters (and &, or |) example mk1&mk2|mk3 is (mk1 and mk2) or mk3, space will no more be a or
 * New: Added a search with regex (/patern/) example /mk[1-3]/,
@@ -42,11 +46,7 @@ v1.00 - 2015.02.17
 * Fix: Some other minor fixes.
 
 v0.10 - 2015.01.02
-Initial release
-
-#### Planned updates/new features
-
-- Add a subassembly search.
+* Initial release
 
 #### Thanks!
 
@@ -56,6 +56,7 @@ Initial release
 * to Banbury for his Part Search,
 * to MrHappyFace for his PartSearch,
 * to Konraden for his Part Search Plugin,
+* to Matthieu James for the Faenza icon theme,
 * to all mods developers which make this game really huge,
 * to my friend Neimad who corrects my bad english ...
 * to Squad for this awesome game.
@@ -71,3 +72,4 @@ Initial release
 * Part Search: http://forum.kerbalspaceprogram.com/threads/95352
 * PartSearch: http://forum.kerbalspaceprogram.com/threads/102375
 * Part Search Plugin: http://forum.kerbalspaceprogram.com/threads/32983
+* Faenza icon theme: http://gnome-look.org/content/show.php/Faenza?content=128143

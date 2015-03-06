@@ -57,19 +57,19 @@ namespace QuickSearch {
 			PartCategorizer.Category _currentFilter = QCategory.CurrentFilter;
 			PartCategorizer.Category _currentSubCategory = QCategory.CurrentSubCategory;
 			if (_currentFilter != null) {
-				if (_currentFilter != QCategory.FilterPartSearch) {
-					QSearch.Text = string.Empty;
-				} else {
+				if (_currentFilter == QCategory.FilterPartSearch || _currentFilter.displayType == EditorPartList.State.SubassemblyList) {
 					if (_currentSubCategory == null) {
 						QCategory.Refresh ();
 					} else {
-						if (_currentSubCategory != QCategory.SubCategoryPartSearch) {
+						if (_currentSubCategory != QCategory.SubCategoryPartSearch && _currentSubCategory != _currentFilter.subcategories [0]) {
 							if (QSearch.Text != _currentSubCategory.button.categoryName) {
 								QSearch.Text = _currentSubCategory.button.categoryName;
 								QCategory.Refresh ();
 							}
 						}
 					}
+				} else {
+					QSearch.Text = string.Empty;
 				}
 				Rect _rectSimple = (_currentFilter.displayType == EditorPartList.State.PartsList ? RectPartsListSimple : RectOthersSimple);
 				Rect _rectAdvanced = (_currentFilter.displayType == EditorPartList.State.PartsList ? RectPartsListAdvanced : RectOthersAdvanced);
@@ -95,6 +95,7 @@ namespace QuickSearch {
 			_Text = GUILayout.TextField (QSearch.Text, TextField);
 			if (_Text != QSearch.Text) {
 				if (PartListTooltips.fetch.displayTooltip) {
+					GameEvents.onTooltipDestroyRequested.Fire();
 					PartListTooltips.fetch.HideTooltip ();
 				}
 				QSearch.Text = _Text;

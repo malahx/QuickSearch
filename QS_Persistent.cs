@@ -23,29 +23,43 @@ using UnityEngine;
 
 namespace QuickSearch {
 
-	internal class QPersistent : MonoBehaviour {
+	internal class QPersistent {
 
 		private static string File_settings = KSPUtil.ApplicationRootPath + "GameData/" + Quick.MOD + "/Persistent.txt";
 
 		private static ConfigNode Persistent = new ConfigNode();
 
-		internal static List<string> GetItem {
+		private static ConfigNode FindThisSearch(string name) {
+			ConfigNode[] _nodes = Persistent.GetNodes ("SEARCH");
+			foreach (ConfigNode _node in _nodes) {
+				if (_node.HasValue ("name")) {
+					if (_node.GetValue ("name") == name) {
+						return _node;
+					}
+				}
+			}
+			return new ConfigNode ();
+		}
+
+		internal static List<string> GetItems {
 			get {
 				List<string> _stringnodes = new List<string> ();
-				ConfigNode[] _nodes = Persistent.GetNodes ();
+				ConfigNode[] _nodes = Persistent.GetNodes ("SEARCH");
 				foreach (ConfigNode _node in _nodes) {
-					_stringnodes.Add (_node.name);
+					if (_node.HasValue ("name")) {
+						_stringnodes.Add (_node.GetValue ("name"));
+					}
 				}
 				return _stringnodes;
 			}
 		}
 
 		internal static string GetDisplayType(string item) {
-			return Persistent.GetNode (item).GetValue ("displayType");
+			return FindThisSearch (item).GetValue ("displayType");
 		}
 
 		internal static Color GetColor(string item) {
-			ConfigNode color = Persistent.GetNode (item).GetNode("color");
+			ConfigNode color = FindThisSearch (item).GetNode("color");
 			float _r = float.Parse (color.GetValue ("r"));
 			float _g = float.Parse (color.GetValue ("g"));
 			float _b = float.Parse (color.GetValue ("b"));
@@ -60,7 +74,8 @@ namespace QuickSearch {
 			if (Persistent.HasNode ("item")) {
 				return;
 			}
-			ConfigNode _node = Persistent.AddNode (item);
+			ConfigNode _node = Persistent.AddNode ("SEARCH");
+			_node.AddValue ("name", item);
 			_node.AddValue("displayType", displayType);
 			_node = _node.AddNode ("color");
 			_node.AddValue ("r", color.r);
@@ -69,13 +84,22 @@ namespace QuickSearch {
 			Save ();
 		}
 
-		internal static void Remove(string item) {
-			Persistent.RemoveNode (item);
+		internal static void Remove(string name) {
+			ConfigNode[] _nodes = Persistent.GetNodes ("SEARCH");
+			ConfigNode _persistent = new ConfigNode ();
+			foreach (ConfigNode _node in _nodes) {
+				if (_node.HasValue ("name")) {
+					if (_node.GetValue ("name") != name) {
+						_persistent.AddNode (_node);
+					}
+				}
+			}
+			Persistent = _persistent;
 			Save ();
 		}
 
 		private static void Save() {
-			if (Persistent.CountNodes > 0) {
+			if (Persistent.GetNodes("SEARCH").Length > 0) {
 				Persistent.Save (File_settings);
 			} else if (File.Exists (File_settings)) {
 				File.Delete (File_settings);

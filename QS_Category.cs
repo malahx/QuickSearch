@@ -35,17 +35,17 @@ namespace QuickSearch {
 			SubCategoryPartSearch =  PartCategorizer.AddCustomSubcategoryFilter(FilterPartSearch, "New Search", Icon,  part => QSearch.FindPart (part));
 			SubCategoryPartSearch.displayType = EditorPartList.State.PartsList;
 
+			List<PartCategorizer.Category> _categories = PartCategorizer.Instance.categories;
+			foreach (PartCategorizer.Category _category in _categories) {
+				if (_category.displayType == EditorPartList.State.SubassemblyList) {
+					PartCategorizer.Category _subcategory = _category.subcategories[0];
+					_subcategory.exclusionFilterSubassembly = new EditorPartListFilter<ShipTemplate> (Quick.MOD, s => QSearch.FindSubassembly (s));
+				}
+			}
+
 			Populate ();
 			Ready = true;
 			Quick.Log ("Category Init");
-		}
-
-		internal static void OnGUI() {
-			CurrentFilter = QCategory.FilterSelected;
-			if (CurrentFilter != null) {
-				CurrentSubCategory = QCategory.CategorySelected (CurrentFilter);
-				SaveLastCategory (CurrentFilter, CurrentSubCategory);
-			}
 		}
 
 		internal static void GoToLastCategory() {
