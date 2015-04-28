@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
 using System.Collections.Generic;
+using RUI.Icons.Selectable;
 using UnityEngine;
 
 namespace QuickSearch {
@@ -28,7 +29,7 @@ namespace QuickSearch {
 		internal static void Init() {
 			IconTexture = GameDatabase.Instance.GetTexture (IconTexturePath, false);
 			IconSelectedTexture = GameDatabase.Instance.GetTexture (IconSelectedTexturePath, false);
-			Icon = new PartCategorizer.Icon (Quick.MOD, IconTexture, IconSelectedTexture);
+			Icon = new Icon (Quick.MOD, IconTexture, IconSelectedTexture);
 
 			FilterPartSearch = PartCategorizer.AddCustomFilter(Quick.MOD, Icon, new Color (0.88f, 0.53f, 0.53f));
 			FilterPartSearch.displayType = EditorPartList.State.PartsList;

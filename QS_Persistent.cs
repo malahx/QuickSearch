@@ -109,8 +109,13 @@ namespace QuickSearch {
 
 		private static void Load() {
 			if (File.Exists (File_settings)) {
-				Persistent = ConfigNode.Load (File_settings);
-				Quick.Log ("Persistent Load");
+				try {
+					Persistent = ConfigNode.Load (File_settings);
+					Quick.Log ("Persistent Load");
+				}
+				catch {
+					Save ();
+				}
 			}
 		}
 	}

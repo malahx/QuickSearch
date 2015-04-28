@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
 using System.Collections.Generic;
+using RUI.Icons.Selectable;
 using UnityEngine;
 
 namespace QuickSearch {
@@ -27,7 +28,7 @@ namespace QuickSearch {
 		internal static string IconSelectedTexturePath = Quick.MOD + "/Textures/iconSelected";
 		internal static Texture2D IconTexture;
 		internal static Texture2D IconSelectedTexture;
-		internal static PartCategorizer.Icon Icon;
+		internal static Icon Icon;
 
 		internal static PartCategorizer.Category FilterPartSearch;
 		internal static PartCategorizer.Category SubCategoryPartSearch;

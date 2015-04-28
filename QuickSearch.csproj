@@ -8,7 +8,7 @@
     <RootNamespace>QuickSearch</RootNamespace>
     <AssemblyName>QuickSearch</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <ReleaseVersion>1.10</ReleaseVersion>
+    <ReleaseVersion>1.11</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,10 +36,10 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\.steam\steam\SteamApps\common\Kerbal Space Program\KSP_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\lib\1.00\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>..\..\.steam\steam\SteamApps\common\Kerbal Space Program\KSP_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\lib\1.00\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -61,11 +61,15 @@
     <None Include="GameData\QuickSearch\QuickSearch.version" />
     <None Include="GameData\QuickSearch\README.md" />
     <None Include="GameData\QuickSearch\Plugins\QuickSearch.dll" />
-    <None Include="GameData\QuickSearch\Textures\icon.png" />
-    <None Include="GameData\QuickSearch\Textures\iconSelected.png" />
     <None Include="icon.xcf" />
+    <None Include="GameData\QuickSearch\Textures\back.dds" />
+    <None Include="GameData\QuickSearch\Textures\bookmark.dds" />
+    <None Include="GameData\QuickSearch\Textures\delete.dds" />
+    <None Include="GameData\QuickSearch\Textures\icon.dds" />
+    <None Include="GameData\QuickSearch\Textures\iconSelected.dds" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="GameData\" />
+    <Folder Include="GameData\QuickSearch\Textures\" />
   </ItemGroup>
 </Project>

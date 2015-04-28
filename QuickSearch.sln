@@ -15,7 +15,6 @@ Global
 		{883EA339-278B-4DDD-8CED-58BD9FA812D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = QuickSearch.csproj
-		version = 1.10
+		version = 1.11
 	EndGlobalSection
 EndGlobal
