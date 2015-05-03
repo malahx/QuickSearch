@@ -1,5 +1,5 @@
 ﻿#### QuickSearch
-#### A plugin for Kerbal Space Program 1.0.0
+#### A plugin for Kerbal Space Program 1.0.2
 #### Copyright 2015 Malah
 
 This program is free software: you can redistribute it and/or modify
@@ -35,10 +35,13 @@ Delete the QuickSearch folder in your KSP/GameData folder.
 
 #### Changelog
 
+v1.11 - 2015.05.03
+* Updated to KSP 1.02
+
 v1.11 - 2015.04.28
 * Fix: Converted textures to DDS,
 * Fix: Some minor bug,
-* Updated to 1.00
+* Updated to KSP 1.00
 
 v1.10 - 2015.03.06
 * New: Added a subassembly search,
