@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C721CF83-5DAA-44C8-89B6-864926C16CF9}</ProjectGuid>
+    <Compiler>
+      <Compiler ctype="GccCompiler" />
+    </Compiler>
+    <Language>C</Language>
+    <Target>Bin</Target>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug</OutputPath>
+    <OutputName>QuickSearch-Tiny</OutputName>
+    <CompileTarget>Bin</CompileTarget>
+    <DefineSymbols>DEBUG MONODEVELOP</DefineSymbols>
+    <SourceDirectory>.</SourceDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release</OutputPath>
+    <OutputName>QuickSearch-Tiny</OutputName>
+    <CompileTarget>Bin</CompileTarget>
+    <OptimizationLevel>3</OptimizationLevel>
+    <DefineSymbols>MONODEVELOP</DefineSymbols>
+    <SourceDirectory>.</SourceDirectory>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Link>README.md</Link>
+    </None>
+    <None Include="..\QuickSearch.version">
+      <Link>QuickSearch.version</Link>
+    </None>
+    <None Include="..\QS_Search.cs">
+      <Link>QS_Search.cs</Link>
+    </None>
+    <None Include="..\QS_Quick.cs">
+      <Link>QS_Quick.cs</Link>
+    </None>
+    <None Include="..\QS_Persistent.cs">
+      <Link>QS_Persistent.cs</Link>
+    </None>
+    <None Include="..\QS_GUI.cs">
+      <Link>QS_GUI.cs</Link>
+    </None>
+    <None Include="..\QS_Category.cs">
+      <Link>QS_Category.cs</Link>
+    </None>
+    <None Include="..\QS_Categorizer.cs">
+      <Link>QS_Categorizer.cs</Link>
+    </None>
+    <None Include="..\QS.cs">
+      <Link>QS.cs</Link>
+    </None>
+    <None Include="..\COPYING">
+      <Link>COPYING</Link>
+    </None>
+  </ItemGroup>
+</Project>

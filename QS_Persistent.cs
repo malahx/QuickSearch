@@ -25,7 +25,7 @@ namespace QuickSearch {
 
 	internal class QPersistent {
 
-		private static string File_settings = KSPUtil.ApplicationRootPath + "GameData/" + Quick.MOD + "/Persistent.txt";
+		private static string File_settings = KSPUtil.ApplicationRootPath + "GameData/" + QuickSearch.MOD + "/Persistent.txt";
 
 		private static ConfigNode Persistent = new ConfigNode();
 
@@ -104,14 +104,14 @@ namespace QuickSearch {
 			} else if (File.Exists (File_settings)) {
 				File.Delete (File_settings);
 			}
-			Quick.Log ("Persistent Save");
+			QuickSearch.Log ("Persistent Save");
 		}
 
 		private static void Load() {
 			if (File.Exists (File_settings)) {
 				try {
 					Persistent = ConfigNode.Load (File_settings);
-					Quick.Log ("Persistent Load");
+					QuickSearch.Log ("Persistent Load");
 				}
 				catch {
 					Save ();

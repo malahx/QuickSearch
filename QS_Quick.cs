@@ -21,7 +21,7 @@ using System.Reflection;
 using UnityEngine;
 
 namespace QuickSearch {
-	public class Quick : MonoBehaviour {
+	public partial class QuickSearch : MonoBehaviour {
 
 		public readonly static string VERSION = Assembly.GetAssembly(typeof(QuickSearch)).GetName().Version.Major + "." + Assembly.GetAssembly(typeof(QuickSearch)).GetName().Version.Minor + Assembly.GetAssembly(typeof(QuickSearch)).GetName().Version.Build;
 		public readonly static string MOD = Assembly.GetAssembly(typeof(QuickSearch)).GetName().Name;

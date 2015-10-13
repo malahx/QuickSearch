@@ -24,8 +24,8 @@ using UnityEngine;
 namespace QuickSearch {
 	public class QCategorizer {
 
-		internal static string IconTexturePath = Quick.MOD + "/Textures/icon";
-		internal static string IconSelectedTexturePath = Quick.MOD + "/Textures/iconSelected";
+		internal static string IconTexturePath = QuickSearch.MOD + "/Textures/icon";
+		internal static string IconSelectedTexturePath = QuickSearch.MOD + "/Textures/iconSelected";
 		internal static Texture2D IconTexture;
 		internal static Texture2D IconSelectedTexture;
 		internal static Icon Icon;
@@ -34,9 +34,11 @@ namespace QuickSearch {
 		internal static PartCategorizer.Category SubCategoryPartSearch;
 		internal static PartCategorizer.Category CurrentFilter;
 		internal static PartCategorizer.Category CurrentSubCategory;
+		#if !TINY	
 		internal static PartCategorizer.Category lastFilter;
 		internal static PartCategorizer.Category lastSubCategory;
 		internal static bool lastIsAdvancedMode = false;
+		#endif
 
 		// Lister tous les filtres et categories
 		internal static List<PartCategorizer.Category> Filters {
@@ -64,7 +66,7 @@ namespace QuickSearch {
 			List<PartCategorizer.Category> _subcategories = currentFilter.subcategories;
 			return _subcategories.Find (s => s.button.activeButton.State == RUIToggleButtonTyped.ButtonState.TRUE);
 		}
-
+		#if !TINY
 		// Ajouter une sous catégorie
 		internal static PartCategorizer.Category AddSubCategory(string item) {
 			System.Random rand = new System.Random ();
@@ -84,7 +86,7 @@ namespace QuickSearch {
 			PartCategorizer.Category _subCategory = PartCategorizer.AddCustomSubcategoryFilter (FilterPartSearch, item, Icon, part => QSearch.FindPart (part));
 			_subCategory.displayType = displayType;
 			_subCategory.button.activeButton.SetColor (color);
-			Quick.Log("Save a research: " + item);
+			QuickSearch.Log("Save a research: " + item);
 			return _subCategory;
 		}
 
@@ -99,7 +101,7 @@ namespace QuickSearch {
 			}
 			Refresh ();
 			QPersistent.Remove (item);
-			Quick.Log("Delete a research: " + item);
+			QuickSearch.Log("Delete a research: " + item);
 			return _subCategory;
 		}
 
@@ -115,33 +117,13 @@ namespace QuickSearch {
 		internal static bool Exists(string text) {
 			return FilterPartSearch.subcategories.Exists (s => s.button.categoryName == text);
 		}
+		#endif
 
-		// Sauvegarder la dernière catégorie
-		internal static void SaveLastCategory() {
-			SaveLastCategory (CurrentFilter);
-		}
-
-		internal static void SaveLastCategory(PartCategorizer.Category Filter) {
-			SaveLastCategory (Filter, CurrentSubCategory);
-		}
-
-		internal static void SaveLastCategory(PartCategorizer.Category Filter, PartCategorizer.Category SubCategory) {
-			if (Filter == FilterPartSearch) {
-				return;
+		// Retourner le filtre par fonctions
+		internal static PartCategorizer.Category FilterByFunctions {
+			get {
+				return PartCategorizer.Instance.filters.Find(f => f.button.categoryName == "Filter by Function");
 			}
-			if (Filter != null) {
-				PartCategorizer.Category _lastFilter = Filter;
-				if (_lastFilter != FilterPartSearch) {
-					lastFilter = _lastFilter;
-				}
-			}
-			if (SubCategory != null) {
-				PartCategorizer.Category _lastSubCat = SubCategory;
-				if (_lastSubCat != SubCategoryPartSearch) {
-					lastSubCategory = _lastSubCat;
-				}
-			}
-			lastIsAdvancedMode = EditorLogic.Mode == EditorLogic.EditorModes.ADVANCED;
 		}
 
 		// Mettre toutes les sous catégories à faux
@@ -189,27 +171,68 @@ namespace QuickSearch {
 					}
 				}
 			}
+			#if !TINY
 			PartCategorizer.Instance.SetAdvancedMode ();
 			FilterSetTrue (_filter);
+			#else
+			if (CurrentFilter.displayType != EditorPartList.State.SubassemblyList) {
+				PartCategorizer.Instance.SetSimpleMode();
+			}
+			#endif
 			if (QSearch.Text == string.Empty) {
 				SubCategorySetTrue (_filter, _subcategory);
 			} else {
+				#if !TINY
 				PartCategorizer.Category _subCategory = _filter.subcategories.Find (s => s.button.categoryName == QSearch.Text);
 				if (_subCategory != null) {
 					SubCategorySetTrue (_filter, _subCategory);
 				} else {
 					SubCategorySetTrue (_filter, _subcategory);
 				}
+				#else
+				SubCategorySetTrue (_filter, _subcategory);
+				#endif
 			}
 			EditorPartList.Instance.Refresh ();
 		}
-			
+
 		internal static void OnGUI() {
 			CurrentFilter = QCategory.FilterSelected;
 			if (CurrentFilter != null) {
 				CurrentSubCategory = QCategory.CategorySelected (CurrentFilter);
+				#if !TINY	
 				SaveLastCategory (CurrentFilter, CurrentSubCategory);
+				#endif
 			}
 		}
+		#if !TINY	
+		// Sauvegarder la dernière catégorie
+		internal static void SaveLastCategory() {
+			SaveLastCategory (CurrentFilter);
+		}
+
+		internal static void SaveLastCategory(PartCategorizer.Category Filter) {
+			SaveLastCategory (Filter, CurrentSubCategory);
+		}
+
+		internal static void SaveLastCategory(PartCategorizer.Category Filter, PartCategorizer.Category SubCategory) {
+			if (Filter == FilterPartSearch) {
+				return;
+			}
+			if (Filter != null) {
+				PartCategorizer.Category _lastFilter = Filter;
+				if (_lastFilter != FilterPartSearch) {
+					lastFilter = _lastFilter;
+				}
+			}
+			if (SubCategory != null) {
+				PartCategorizer.Category _lastSubCat = SubCategory;
+				if (_lastSubCat != SubCategoryPartSearch) {
+					lastSubCategory = _lastSubCat;
+				}
+			}
+			lastIsAdvancedMode = EditorLogic.Mode == EditorLogic.EditorModes.ADVANCED;
+		}
+		#endif
 	}
 }

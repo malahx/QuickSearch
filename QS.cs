@@ -20,14 +20,24 @@ using System;
 
 namespace QuickSearch {
 	[KSPAddon(KSPAddon.Startup.EditorAny, false)]
-	public class QuickSearch : Quick {
+	public partial class QuickSearch {
+
+		public static QuickSearch Instance;
 
 		private void Awake() {
+			if (!HighLogic.LoadedSceneIsEditor || Instance != null) {
+				Warning ("There's already an Instance of " + MOD);
+				Destroy (this);
+				return;
+			}
+			Instance = this;
 			GameEvents.onGUIEditorToolbarReady.Add (OnGUIEditorToolbarReady);
 		}
 
 		private void Start() {
+			#if !TINY
 			QPersistent.Init ();
+			#endif
 			QGUI.Init ();
 		}
 
@@ -36,19 +46,18 @@ namespace QuickSearch {
 		}
 
 		private void OnGUI() {
-			if (HighLogic.LoadedSceneIsEditor) {
-				if (EditorLogic.fetch.editorScreen == EditorScreen.Parts && PartCategorizer.Ready && EditorPanels.Instance != null) {
-					if (QCategory.Ready && QGUI.Ready) {
-						QCategory.OnGUI ();
-						QGUI.OnGUI ();
-					} else {
-						if (!QCategory.Ready) {
-							QCategory.Init ();
-						}
-						if (!QGUI.Ready) {
-							QGUI.Init ();
-						}
-					}
+			if (!HighLogic.LoadedSceneIsEditor || EditorLogic.fetch.editorScreen != EditorScreen.Parts || !PartCategorizer.Ready || EditorPanels.Instance == null) {
+				return;
+			}
+			if (QCategory.Ready && QGUI.Ready) {
+				QCategory.OnGUI ();
+				QGUI.OnGUI ();
+			} else {
+				if (!QCategory.Ready) {
+					QCategory.Init ();
+				}
+				if (!QGUI.Ready) {
+					QGUI.Init ();
 				}
 			}
 		}

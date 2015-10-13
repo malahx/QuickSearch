@@ -35,6 +35,12 @@ Delete the QuickSearch folder in your KSP/GameData folder.
 
 #### Changelog
 
+v1.14 - 2015.10.14
+* Fix: Corrected the part's search function for mods compatibility (part.category == none),
+* Fix: Corrected the invalid character strip to accept this character: ",
+* Fix: Enhanced the position of the search bar to fit with others resolutions,
+* Optional: Added an optional version of QuickSearch with only the search bar (no back/bookmark functions as QuickSearch v0.10).
+
 v1.13 - 2015.06.25
 * Updated to KSP 1.0.X
 

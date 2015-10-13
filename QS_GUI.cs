@@ -17,39 +17,68 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 using System;
+using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace QuickSearch {
 	internal class QGUI {
-
-		private static string BackTexturePath = Quick.MOD + "/Textures/back";
-		private static string SaveTexturePath = Quick.MOD + "/Textures/bookmark";
-		private static string DeleteTexturePath = Quick.MOD + "/Textures/delete";
+		#if !TINY
+		private static string BackTexturePath = QuickSearch.MOD + "/Textures/back";
 		internal static Texture2D BackTexture;
+
+		private static string SaveTexturePath = QuickSearch.MOD + "/Textures/bookmark";
 		internal static Texture2D SaveTexture;
+
+		private static string DeleteTexturePath = QuickSearch.MOD + "/Textures/delete";
 		internal static Texture2D DeleteTexture;
-		private static Rect RectPartsListSimple;
-		private static Rect RectPartsListAdvanced;
-		private static Rect RectOthersSimple;
-		private static Rect RectOthersAdvanced;
+		#endif
 		private static GUIStyle TextField;
 
 		internal static bool Ready = false;
 
+		private static Rect RectPartsList {
+			get {
+				#if TINY
+				return RectOthers;
+				#else
+				Vector3d _partListPos = GetPosition (EditorPartList.Instance.transformTopLeft);
+				Vector3d _footerPos = GetPosition (EditorPartList.Instance.footerTransform);
+				float _partsPanelTrueWidth = EditorPanels.Instance.partsPanelWidth - PartCategorizer.Instance.scrollListMain.scrollList.viewableArea.x - PartCategorizer.Instance.scrollListSub.scrollList.viewableArea.x;
+				return new Rect ((float)_partListPos.x +10, (float)_footerPos.y -20, _partsPanelTrueWidth -40, 30);
+				#endif
+			}
+		}
+		private static Rect RectOthers {
+			get {
+				Vector3d _prevPagePos = GetPosition (EditorPartList.Instance.prevPage.transform);
+				Vector3d _nextPagePos = GetPosition (EditorPartList.Instance.nextPage.transform);
+				return new Rect ((float)_prevPagePos.x +25, (float)_prevPagePos.y -10, (float)_nextPagePos.x - (float)_prevPagePos.x -55, 40);
+			}
+		}
+
+		public static Vector3 GetPosition(Transform trans) {
+			EZCameraSettings _uiCam = UIManager.instance.uiCameras.FirstOrDefault(c => (c.mask & (1 << trans.gameObject.layer)) != 0);
+			if (_uiCam != null) {
+				Vector3 _screenPos = _uiCam.camera.WorldToScreenPoint (trans.position);
+				_screenPos.y = Screen.height - _screenPos.y;
+				return _screenPos;
+			}
+			return Vector3d.zero;
+		}
+
 		internal static void Init() {
+			#if !TINY
 			BackTexture = GameDatabase.Instance.GetTexture (BackTexturePath, false);
 			SaveTexture = GameDatabase.Instance.GetTexture (SaveTexturePath, false);
 			DeleteTexture = GameDatabase.Instance.GetTexture (DeleteTexturePath, false);
-			RectPartsListSimple = new Rect(55, Screen.height - 135, 180, 30);
-			RectPartsListAdvanced = new Rect(90, Screen.height - 135, 180, 30);
-			RectOthersSimple = new Rect(85, Screen.height - 105, 115, 40);
-			RectOthersAdvanced = new Rect(120, Screen.height - 105, 115, 40);
+			#endif
 			TextField = HighLogic.Skin.textField;
 			TextField.stretchWidth = true;
 			TextField.fixedHeight = 20;
 			TextField.alignment = TextAnchor.MiddleCenter;
 			Ready = true;
-			Quick.Log ("GUI Init");
+			QuickSearch.Log ("GUI Init");
 		}
 
 		internal static void OnGUI() {
@@ -57,7 +86,7 @@ namespace QuickSearch {
 			PartCategorizer.Category _currentFilter = QCategory.CurrentFilter;
 			PartCategorizer.Category _currentSubCategory = QCategory.CurrentSubCategory;
 			if (_currentFilter != null) {
-				if (_currentFilter == QCategory.FilterPartSearch || _currentFilter.displayType == EditorPartList.State.SubassemblyList) {
+				if (QCategory.isPartSearch) {
 					if (_currentSubCategory == null) {
 						QCategory.Refresh ();
 					} else {
@@ -67,32 +96,30 @@ namespace QuickSearch {
 								QCategory.Refresh ();
 							}
 						}
+						
 					}
 				} else {
 					QSearch.Text = string.Empty;
 				}
-				Rect _rectSimple = (_currentFilter.displayType == EditorPartList.State.PartsList ? RectPartsListSimple : RectOthersSimple);
-				Rect _rectAdvanced = (_currentFilter.displayType == EditorPartList.State.PartsList ? RectPartsListAdvanced : RectOthersAdvanced);
-
-				DrawSearch ((EditorLogic.Mode == EditorLogic.EditorModes.SIMPLE ? _rectSimple : _rectAdvanced));
-
+				DrawSearch ((_currentFilter.displayType == EditorPartList.State.PartsList ? RectPartsList : RectOthers));
+				#if !TINY
 				if (_currentFilter == QCategory.FilterPartSearch) {
 					if (_currentFilter.displayType == EditorPartList.State.PartsList) {
-						DrawButton ((EditorLogic.Mode == EditorLogic.EditorModes.SIMPLE ? RectOthersSimple : RectOthersAdvanced));
+						DrawButton (RectOthers);
 					}
 				}
+				#endif
 			}
 		}
 
 		private static void DrawSearch(Rect rectArea) {
-			string _Text = QSearch.CleanInput (QSearch.Text);
-			if (_Text != QSearch.Text) {
-				QSearch.Text = _Text;
-			}
+			//string _Text = QSearch.CleanInput (QSearch.Text);
 			GUILayout.BeginArea (rectArea);
 			DrawSpace ();
 			GUILayout.BeginVertical ();
-			_Text = GUILayout.TextField (QSearch.Text, TextField);
+			GUILayout.BeginHorizontal ();
+			string _Text = GUILayout.TextField (QSearch.Text, TextField);
+			_Text = CleanInput(_Text);
 			if (_Text != QSearch.Text) {
 				if (PartListTooltips.fetch.displayTooltip) {
 					GameEvents.onTooltipDestroyRequested.Fire();
@@ -101,11 +128,13 @@ namespace QuickSearch {
 				QSearch.Text = _Text;
 				QCategory.Refresh ();
 			}
+			GUILayout.EndHorizontal ();
 			GUILayout.EndVertical ();
 			DrawSpace ();
 			GUILayout.EndArea ();
 		}
 
+		#if !TINY	
 		private static void DrawButton(Rect rectArea) {
 			GUILayout.BeginArea (rectArea);
 			DrawSpace ();
@@ -127,11 +156,16 @@ namespace QuickSearch {
 			DrawSpace ();
 			GUILayout.EndArea ();
 		}
-
+		#endif
 		private static void DrawSpace() {
 			GUILayout.BeginVertical ();
 			GUILayout.Space (5);
 			GUILayout.EndVertical ();
+		}
+
+		internal static string CleanInput(string strIn) {
+			// Replace invalid characters with empty strings. 
+			return Regex.Replace(strIn, @"[^\w\.@-|&/\(\)\[\]\+?,;:/\*µ\^\$=\ ""]", string.Empty); 
 		}
 	}
 }

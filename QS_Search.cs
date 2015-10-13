@@ -26,6 +26,22 @@ namespace QuickSearch {
 
 		internal static string Text = string.Empty;
 
+		private static bool partHasCategory(AvailablePart part) {
+			if (part.category != PartCategories.none) {
+				return true;
+			}
+			PartCategorizer.Category _filter = QCategory.FilterByFunctions;
+			List<PartCategorizer.Category> _subcategories = _filter.subcategories;
+			bool _val = false;
+			foreach (PartCategorizer.Category _subcategory in _subcategories) {
+				if (_subcategory.exclusionFilter == null) {
+					continue;
+				}
+				_val |= _subcategory.exclusionFilter.FilterCriteria.Invoke (part);
+			}
+			return _val;
+		}
+
 		private static string PartInfo(AvailablePart part) {
 			string _partinfo = string.Empty;
 			if (part.title != null) {
@@ -78,7 +94,10 @@ namespace QuickSearch {
 		}
 
 		internal static bool FindPart(AvailablePart part) {
-			if (part.category == PartCategories.none || part.TechRequired == "unassigned" || part == null) {
+			if (part == null) {
+				return false;
+			}
+			if (!partHasCategory(part)) {
 				return false;
 			}
 			if (Text == string.Empty) {
@@ -89,11 +108,12 @@ namespace QuickSearch {
 				return false;
 			}
 			string _Text = Regex.Replace (Text, @"^/([^/]+)/$", "$1");
+
 			if (_Text != Text) {
 				try {
-					return Regex.IsMatch (_partinfo, CleanInput(_Text));
+					return Regex.IsMatch (_partinfo, _Text);
 				} catch {
-					return FindStandard (_partinfo, CleanInput(_Text));
+					return FindStandard (_partinfo, _Text);
 				}
 			} else {
 				return FindStandard (_partinfo, Text);
@@ -139,25 +159,13 @@ namespace QuickSearch {
 			string _Text = Regex.Replace (Text, @"^/([^/]+)/$", "$1");
 			if (_Text != Text) {
 				try {
-					return Regex.IsMatch (_shipinfo, CleanInput(_Text));
+					return Regex.IsMatch (_shipinfo, _Text);
 				} catch {
-					return FindStandard (_shipinfo, CleanInput(_Text));
+					return FindStandard (_shipinfo, _Text);
 				}
 			} else {
 				return FindStandard (_shipinfo, Text);
 			}
 		}
-
-		// From https://msdn.microsoft.com/en-us/library/844skk0h(v=vs.90).aspx
-		internal static string CleanInput(string strIn) {
-			// Replace invalid characters with empty strings. 
-			return Regex.Replace(strIn, @"[^\w\.@-|&/()\[\]\+?,;:/\*µ\^\$=\ ]", string.Empty); 
-		}
-
-		/*// From https://msdn.microsoft.com/en-us/library/844skk0h(v=vs.90).aspx
-		internal static string CleanRegex(string strIn) {
-			// Replace invalid characters with empty strings. 
-			return Regex.Replace(strIn, @"[^\w@-\ |&\.,]", string.Empty); 
-		}*/
 	}
 }

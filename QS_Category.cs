@@ -26,29 +26,50 @@ namespace QuickSearch {
 
 		internal static bool Ready = false;
 
+		internal static bool isPartSearch {
+			get {
+				#if !TINY
+				return CurrentFilter == QCategory.FilterPartSearch || CurrentFilter.displayType == EditorPartList.State.SubassemblyList;
+				#else
+				return CurrentSubCategory == QCategory.SubCategoryPartSearch || CurrentFilter.displayType == EditorPartList.State.SubassemblyList;
+				#endif
+			}
+		}
+
 		internal static void Init() {
 			IconTexture = GameDatabase.Instance.GetTexture (IconTexturePath, false);
 			IconSelectedTexture = GameDatabase.Instance.GetTexture (IconSelectedTexturePath, false);
-			Icon = new Icon (Quick.MOD, IconTexture, IconSelectedTexture);
+			Icon = new Icon (QuickSearch.MOD, IconTexture, IconSelectedTexture);
 
-			FilterPartSearch = PartCategorizer.AddCustomFilter(Quick.MOD, Icon, new Color (0.88f, 0.53f, 0.53f));
+			#if !TINY
+			FilterPartSearch = PartCategorizer.AddCustomFilter(QuickSearch.MOD, Icon, new Color (0.88f, 0.53f, 0.53f));
 			FilterPartSearch.displayType = EditorPartList.State.PartsList;
+			#else
+			FilterPartSearch = FilterByFunctions;
+			#endif
+
 			SubCategoryPartSearch =  PartCategorizer.AddCustomSubcategoryFilter(FilterPartSearch, "New Search", Icon,  part => QSearch.FindPart (part));
 			SubCategoryPartSearch.displayType = EditorPartList.State.PartsList;
-
+			#if TINY
+			SubCategoryPartSearch.button.activeButton.SetColor (new Color (0.88f, 0.53f, 0.53f));
+			RUIToggleButtonTyped button = FilterPartSearch.button.activeButton;
+			button.SetFalse(button, RUIToggleButtonTyped.ClickType.FORCED);
+			button.SetTrue(button, RUIToggleButtonTyped.ClickType.FORCED);
+			#endif
 			List<PartCategorizer.Category> _categories = PartCategorizer.Instance.categories;
 			foreach (PartCategorizer.Category _category in _categories) {
 				if (_category.displayType == EditorPartList.State.SubassemblyList) {
 					PartCategorizer.Category _subcategory = _category.subcategories[0];
-					_subcategory.exclusionFilterSubassembly = new EditorPartListFilter<ShipTemplate> (Quick.MOD, s => QSearch.FindSubassembly (s));
+					_subcategory.exclusionFilterSubassembly = new EditorPartListFilter<ShipTemplate> (QuickSearch.MOD, s => QSearch.FindSubassembly (s));
 				}
 			}
-
+			#if !TINY
 			Populate ();
+			#endif
 			Ready = true;
-			Quick.Log ("Category Init");
+			QuickSearch.Log ("Category Init");
 		}
-
+		#if !TINY	
 		internal static void GoToLastCategory() {
 			QSearch.Text = string.Empty;
 			if (lastIsAdvancedMode) {
@@ -68,7 +89,7 @@ namespace QuickSearch {
 					_btn.SetTrue (_btn, RUIToggleButtonTyped.ClickType.FORCED, true);
 				}
 			}
-			Quick.Log("Back to the last Category");
+			QuickSearch.Log("Back to the last Category");
 		}
 
 		internal static void Bookmark(string text) {
@@ -78,5 +99,6 @@ namespace QuickSearch {
 				DeleteSubCategory (text);
 			}
 		}
+		#endif
 	}
 }
