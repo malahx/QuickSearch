@@ -1,6 +1,6 @@
 ﻿/* 
 QuickSearch
-Copyright 2015 Malah
+Copyright 2016 Malah
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -83,9 +83,12 @@ namespace QuickSearch {
 		}
 
 		internal static PartCategorizer.Category AddSubCategory(string item, EditorPartList.State displayType, Color color) {
-			PartCategorizer.Category _subCategory = PartCategorizer.AddCustomSubcategoryFilter (FilterPartSearch, item, Icon, part => QSearch.FindPart (part));
-			_subCategory.displayType = displayType;
-			_subCategory.button.activeButton.SetColor (color);
+			return AddSubCategory(item, displayType, color, Icon);
+		}
+
+		internal static PartCategorizer.Category AddSubCategory(string item, EditorPartList.State displayType, Color color, Icon icon) {
+			PartCategorizer.Category _subCategory = PartCategorizer.AddCustomSubcategoryFilter (FilterPartSearch, item, icon, part => QSearch.FindPart (part));
+			Category.Setup (_subCategory, displayType, color, icon);
 			QuickSearch.Log("Save a research: " + item);
 			return _subCategory;
 		}
@@ -109,7 +112,12 @@ namespace QuickSearch {
 			List<string> _items = QPersistent.GetItems;
 			foreach (string _item in _items) {
 				EditorPartList.State _displayType = (QPersistent.GetDisplayType (_item) == EditorPartList.State.PartsList.ToString () ? EditorPartList.State.PartsList : EditorPartList.State.SubassemblyList);
-				AddSubCategory (_item, _displayType, QPersistent.GetColor (_item));
+				Icon _icon = QPersistent.GetIcon (_item);
+				if (_icon == null) {
+					AddSubCategory (_item, _displayType, QPersistent.GetColor (_item));
+				} else {
+					AddSubCategory (_item, _displayType, QPersistent.GetColor (_item), _icon);
+				}
 			}
 		}
 
@@ -232,6 +240,44 @@ namespace QuickSearch {
 				}
 			}
 			lastIsAdvancedMode = EditorLogic.Mode == EditorLogic.EditorModes.ADVANCED;
+		}
+
+		public class Category {
+
+			public static PartCategorizer.Category category;
+
+			internal static void Setup(PartCategorizer.Category cat, EditorPartList.State displayType, Color color, Icon icon) {
+				category = cat;
+				RUIToggleButtonTyped _abutton = category.button.activeButton;
+				category.button.activeButton.onClick = (RUIToggleButtonTyped.OnClick)Delegate.Combine (_abutton.onClick, new RUIToggleButtonTyped.OnClick (RightClick));
+				category.displayType = displayType;
+				_abutton.SetColor (color);
+			}
+
+			private static void RightClick (RUIToggleButtonTyped button, RUIToggleButtonTyped.ClickType clickType) {
+				if (clickType == RUIToggleButtonTyped.ClickType.RIGHT) {
+					PartCategorizer.PopupData _popupData = new PartCategorizer.PopupData (QuickSearch.MOD, category.button.categoryName, category.button.icon);
+					PartCategorizer.Instance.ShowPopup (_popupData, new Callback (EditCategory), new PartCategorizerPopup.CriteriaAccept (EditCategoryCriteria), new Callback (DeleteCategory), new PartCategorizerPopup.CriteriaDelete (DeleteCategoryCriteria));
+				}
+			}
+
+			private static void EditCategory () {
+				
+			}
+
+			private static bool EditCategoryCriteria (string categoryName, out string reason) {
+				reason = string.Empty;
+				return true;
+			}
+
+			private static void DeleteCategory () {
+			}
+
+			private static bool DeleteCategoryCriteria (out string reason) {
+				reason = string.Empty;
+				return true;
+			}
+
 		}
 		#endif
 	}

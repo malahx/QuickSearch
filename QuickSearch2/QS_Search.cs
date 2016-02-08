@@ -21,26 +21,10 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-namespace QuickSearch {
+namespace QuickSearch2 {
 	internal class QSearch {
 
 		internal static string Text = string.Empty;
-
-		private static bool partHasCategory(AvailablePart part) {
-			if (part.category != PartCategories.none) {
-				return true;
-			}
-			PartCategorizer.Category _filter = QCategory.FilterByFunctions;
-			List<PartCategorizer.Category> _subcategories = _filter.subcategories;
-			bool _val = false;
-			foreach (PartCategorizer.Category _subcategory in _subcategories) {
-				if (_subcategory.exclusionFilter == null) {
-					continue;
-				}
-				_val |= _subcategory.exclusionFilter.FilterCriteria.Invoke (part);
-			}
-			return _val;
-		}
 
 		private static string PartInfo(AvailablePart part) {
 			string _partinfo = string.Empty;
@@ -97,9 +81,6 @@ namespace QuickSearch {
 			if (part == null) {
 				return false;
 			}
-			if (!partHasCategory(part)) {
-				return false;
-			}
 			if (Text == string.Empty) {
 				return true;
 			}
@@ -143,29 +124,6 @@ namespace QuickSearch {
 				}
 			}
 			return _Return;
-		}
-
-		internal static bool FindSubassembly(ShipTemplate ship) {
-			if (ship == null) {
-				return false;
-			}
-			if (Text == string.Empty) {
-				return true;
-			}
-			string _shipinfo = ShipInfo (ship);
-			if (_shipinfo == string.Empty) {
-				return false;
-			}
-			string _Text = Regex.Replace (Text, @"^/([^/]+)/$", "$1");
-			if (_Text != Text) {
-				try {
-					return Regex.IsMatch (_shipinfo, _Text);
-				} catch {
-					return FindStandard (_shipinfo, _Text);
-				}
-			} else {
-				return FindStandard (_shipinfo, Text);
-			}
 		}
 	}
 }

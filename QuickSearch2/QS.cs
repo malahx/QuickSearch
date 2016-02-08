@@ -18,15 +18,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
 
-namespace QuickSearch {
-	[KSPAddon(KSPAddon.Startup.EditorAny, false)]
-	public partial class QuickSearch {
+namespace QuickSearch2 {
+	[KSPAddon(KSPAddon.Startup.SpaceCentre, false)]
+	public partial class QuickSearch2 {
 
-		public static QuickSearch Instance;
+		public static QuickSearch2 Instance;
 
 		private void Awake() {
-			if (HighLogic.LoadedScene != GameScenes.EDITOR) {
-				Warning ("This mod works only on the on the Editor. Destroy.");
+			if (HighLogic.LoadedScene != GameScenes.SPACECENTER) {
+				Warning ("This mod works only on the SpaceCenter. Destroy.");
+				Destroy (this);
+				return;
+			}
+			if (HighLogic.CurrentGame.Mode != Game.Modes.CAREER && HighLogic.CurrentGame.Mode != Game.Modes.SCIENCE_SANDBOX) {
+				Warning ("This mod works only on a Career or on a Science gamemode. Destroy.");
 				Destroy (this);
 				return;
 			}
@@ -36,42 +41,34 @@ namespace QuickSearch {
 				return;
 			}
 			Instance = this;
-			GameEvents.onGUIEditorToolbarReady.Add (OnGUIEditorToolbarReady);
+			GameEvents.onGUIRnDComplexSpawn.Add (RnDComplexSpawn);
+			GameEvents.onGUIRnDComplexDespawn.Add (RnDComplexDespawn);
 			Log ("Awake", true);
 		}
 
 		private void Start() {
-			#if !TINY
-			QPersistent.Init ();
-			#endif
 			QGUI.Init ();
 			Log ("Start", true);
 		}
 
-		private void OnGUIEditorToolbarReady() {
-			QCategory.Init ();
-			Log ("OnGUIEditorToolbarReady", true);
+		private void RnDComplexSpawn() {
+			QGUI.Ready = true;
+			QSearch.Text = string.Empty;
+			Log ("RnDComplexSpawn", true);
+		}
+		private void RnDComplexDespawn() {
+			QGUI.Ready = false;
+			QSearch.Text = string.Empty;			
+			Log ("RnDComplexDespawn", true);
 		}
 
 		private void OnGUI() {
-			if (!HighLogic.LoadedSceneIsEditor || EditorLogic.fetch.editorScreen != EditorScreen.Parts || !PartCategorizer.Ready || EditorPanels.Instance == null) {
-				return;
-			}
-			if (QCategory.Ready && QGUI.Ready) {
-				QCategory.OnGUI ();
-				QGUI.OnGUI ();
-			} else {
-				if (!QCategory.Ready) {
-					QCategory.Init ();
-				}
-				if (!QGUI.Ready) {
-					QGUI.Init ();
-				}
-			}
+			QGUI.OnGUI ();
 		}
 
 		private void OnDestroy() {
-			GameEvents.onGUIEditorToolbarReady.Remove (OnGUIEditorToolbarReady);
+			GameEvents.onGUIRnDComplexSpawn.Remove (RnDComplexSpawn);
+			GameEvents.onGUIRnDComplexDespawn.Remove (RnDComplexDespawn);
 			Log ("OnDestroy", true);
 		}
 	}

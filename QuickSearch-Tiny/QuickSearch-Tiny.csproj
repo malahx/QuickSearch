@@ -7,7 +7,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>QuickSearchTiny</RootNamespace>
     <AssemblyName>QuickSearch</AssemblyName>
-    <ReleaseVersion>1.14</ReleaseVersion>
+    <ReleaseVersion>1.20</ReleaseVersion>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -37,11 +37,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="UnityEngine">
-      <HintPath>..\..\lib\1.0.4\UnityEngine.dll</HintPath>
-    </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\lib\1.0.4\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\lib\1.0.5.1028\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\lib\1.0.5.1028\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -88,14 +88,17 @@
     <None Include="..\Optional\Tiny\GameData\QuickSearch\Plugins\QuickSearch.dll">
       <Link>GameData\QuickSearch\Plugins\QuickSearch.dll</Link>
     </None>
+    <None Include="..\Optional\Tiny\GameData\QuickSearch\Textures\delete.dds">
+      <Link>GameData\QuickSearch\Textures\delete.dds</Link>
+    </None>
     <None Include="..\Optional\Tiny\GameData\QuickSearch\Textures\icon.dds">
       <Link>GameData\QuickSearch\Textures\icon.dds</Link>
     </None>
     <None Include="..\Optional\Tiny\GameData\QuickSearch\Textures\iconSelected.dds">
       <Link>GameData\QuickSearch\Textures\iconSelected.dds</Link>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="GameData\" />
+    <None Include="..\GameData\QuickSearch\Plugins\QuickSearch2.dll">
+      <Link>GameData\QuickSearch\Plugins\QuickSearch2.dll</Link>
+    </None>
   </ItemGroup>
 </Project>

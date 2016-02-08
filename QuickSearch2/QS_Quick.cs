@@ -20,11 +20,11 @@ using System;
 using System.Reflection;
 using UnityEngine;
 
-namespace QuickSearch {
-	public partial class QuickSearch : MonoBehaviour {
+namespace QuickSearch2 {
+	public partial class QuickSearch2 : MonoBehaviour {
 
-		public readonly static string VERSION = Assembly.GetAssembly(typeof(QuickSearch)).GetName().Version.Major + "." + Assembly.GetAssembly(typeof(QuickSearch)).GetName().Version.Minor + Assembly.GetAssembly(typeof(QuickSearch)).GetName().Version.Build;
-		public readonly static string MOD = Assembly.GetAssembly(typeof(QuickSearch)).GetName().Name;
+		public readonly static string VERSION = Assembly.GetAssembly(typeof(QuickSearch2)).GetName().Version.Major + "." + Assembly.GetAssembly(typeof(QuickSearch2)).GetName().Version.Minor + Assembly.GetAssembly(typeof(QuickSearch2)).GetName().Version.Build;
+		public readonly static string MOD = Assembly.GetAssembly(typeof(QuickSearch2)).GetName().Name;
 		internal static void Log(string _string, bool debug = false) {
 			if (!debug) {
 				Debug.Log (MOD + "(" + VERSION + "): " + _string);
