@@ -47,23 +47,19 @@ namespace QuickSearch2 {
 		}
 
 		private void Start() {
-			QGUI.Init ();
+			Init ();
 			Log ("Start", true);
 		}
 
 		private void RnDComplexSpawn() {
-			QGUI.Ready = true;
+			Ready = true;
 			QSearch.Text = string.Empty;
 			Log ("RnDComplexSpawn", true);
 		}
 		private void RnDComplexDespawn() {
-			QGUI.Ready = false;
+			Ready = false;
 			QSearch.Text = string.Empty;			
 			Log ("RnDComplexDespawn", true);
-		}
-
-		private void OnGUI() {
-			QGUI.OnGUI ();
 		}
 
 		private void OnDestroy() {

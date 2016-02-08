@@ -23,35 +23,36 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace QuickSearch2 {
-	internal class QGUI {
-		private static GUIStyle TextField;
+	public partial class QuickSearch2 {
+		
+		private GUIStyle TextField;
+		private GUIStyle ButtonStyle;
 
-		internal static bool Ready = false;
+		internal bool Ready = false;
 
-		private static string DeleteTexturePath = "QuickSearch/Textures/delete";
-		private static Texture2D DeleteTexture;
-		private static GUIStyle ButtonStyle;
+		private string DeleteTexturePath = "QuickSearch/Textures/delete";
+		private Texture2D DeleteTexture;
 
-		private static Rect RectRDSearch {
+		private Rect RectRDSearch {
 			get {
 				return new Rect (Screen.width / 2 - 200, Screen.height - 50, 200, 40);
 			}
 		}			
 
-		internal static void Init() {
-			TextField = HighLogic.Skin.textField;
+		internal void Init() {
+			TextField = new GUIStyle(HighLogic.Skin.textField);
 			TextField.stretchWidth = true;
 			TextField.fixedHeight = 20;
 			TextField.alignment = TextAnchor.MiddleCenter;
-			ButtonStyle = HighLogic.Skin.button;
+			ButtonStyle = new GUIStyle(HighLogic.Skin.button);
 			ButtonStyle.alignment = TextAnchor.MiddleCenter;
 			ButtonStyle.padding = new RectOffset (0, 0, 0, 0);
 			ButtonStyle.imagePosition = ImagePosition.ImageOnly;
 			DeleteTexture = GameDatabase.Instance.GetTexture (DeleteTexturePath, false);
-			QuickSearch2.Log ("GUI Init", true);
+			Log ("GUI Init", true);
 		}
 
-		internal static void OnGUI() {
+		internal void OnGUI() {
 			if (!Ready) {
 				return;
 			}
@@ -77,7 +78,7 @@ namespace QuickSearch2 {
 			GUILayout.EndArea ();
 		}
 
-		private static string CleanInput(string strIn) {
+		private string CleanInput(string strIn) {
 			// Replace invalid characters with empty strings. 
 			return Regex.Replace(strIn, @"[^\w\.@-|&/\(\)\[\]\+?,;:/\*µ\^\$=\ ""]", string.Empty); 
 		}

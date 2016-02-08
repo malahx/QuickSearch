@@ -74,7 +74,7 @@ namespace QuickSearch {
 			SaveTexture = GameDatabase.Instance.GetTexture (SaveTexturePath, false);
 			DeleteTexture = GameDatabase.Instance.GetTexture (DeleteTexturePath, false);
 			#endif
-			TextField = HighLogic.Skin.textField;
+			TextField = new GUIStyle(HighLogic.Skin.textField);
 			TextField.stretchWidth = true;
 			TextField.fixedHeight = 20;
 			TextField.alignment = TextAnchor.MiddleCenter;

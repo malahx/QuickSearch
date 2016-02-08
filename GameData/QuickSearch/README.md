@@ -35,6 +35,9 @@ Delete the QuickSearch folder in your KSP/GameData folder.
 
 #### Changelog
 
+v1.21 - 2016.02.08
+* Fix: Corrected GUIStyle which block popups.
+
 v1.20 - 2016.02.08
 * New: Added part search functions for the tech tree,
 * Fix: Compiled against KSP 1.0.5
@@ -94,6 +97,7 @@ v0.10 - 2015.01.02
 * https://kerbalstuff.com/mod/472/QuickSearch
 * http://kerbal.curseforge.com/ksp-mods/226668-quicksearch
 * https://github.com/malahx/QuickSearch
+* Tree Toppler: http://forum.kerbalspaceprogram.com/index.php?/topic/97033-
 * PartCatalog: http://forum.kerbalspaceprogram.com/threads/35018
 * Filter Extensions: http://forum.kerbalspaceprogram.com/threads/104231
 * Part Search: http://forum.kerbalspaceprogram.com/threads/95352
