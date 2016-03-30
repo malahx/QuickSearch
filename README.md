@@ -1,5 +1,5 @@
 ﻿#### QuickSearch
-#### A plugin for Kerbal Space Program 1.0.X
+#### A plugin for Kerbal Space Program
 #### Copyright 2016 Malah
 
 This program is free software: you can redistribute it and/or modify
