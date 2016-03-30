@@ -17,62 +17,45 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 using System;
+using System.Reflection;
+using UnityEngine;
 
 namespace QuickSearch {
-	[KSPAddon(KSPAddon.Startup.EditorAny, false)]
-	public partial class QuickSearch {
+	[KSPAddon(KSPAddon.Startup.SpaceCentre, false)]
+	public partial class QRnD : QuickSearch { }
 
-		public static QuickSearch Instance;
+	public partial class QuickSearch : MonoBehaviour {
 
-		private void Awake() {
-			if (HighLogic.LoadedScene != GameScenes.EDITOR) {
-				Warning ("This mod works only on the on the Editor. Destroy.");
-				Destroy (this);
-				return;
-			}
-			if (Instance != null) {
-				Warning ("There's already an Instance of " + MOD +". Destroy.");
-				Destroy (this);
-				return;
-			}
-			Instance = this;
-			GameEvents.onGUIEditorToolbarReady.Add (OnGUIEditorToolbarReady);
-			Log ("Awake", true);
-		}
+		protected readonly static string VERSION = Assembly.GetAssembly(typeof(QuickSearch)).GetName().Version.Major + "." + Assembly.GetAssembly(typeof(QuickSearch)).GetName().Version.Minor + Assembly.GetAssembly(typeof(QuickSearch)).GetName().Version.Build;
+		protected readonly static string MOD = Assembly.GetAssembly(typeof(QuickSearch)).GetName().Name;
 
-		private void Start() {
-			#if !TINY
-			QPersistent.Init ();
-			#endif
-			QGUI.Init ();
-			Log ("Start", true);
-		}
-
-		private void OnGUIEditorToolbarReady() {
-			QCategory.Init ();
-			Log ("OnGUIEditorToolbarReady", true);
-		}
-
-		private void OnGUI() {
-			if (!HighLogic.LoadedSceneIsEditor || EditorLogic.fetch.editorScreen != EditorScreen.Parts || !PartCategorizer.Ready || EditorPanels.Instance == null) {
-				return;
-			}
-			if (QCategory.Ready && QGUI.Ready) {
-				QCategory.OnGUI ();
-				QGUI.OnGUI ();
+		protected static void Log(string String, string Title = null) {
+			if (Title == null) {
+				Title = MOD;
 			} else {
-				if (!QCategory.Ready) {
-					QCategory.Init ();
-				}
-				if (!QGUI.Ready) {
-					QGUI.Init ();
-				}
+				Title = string.Format ("{0}({1})", MOD, Title);
+			}
+			if (QSettings.Instance.Debug) {
+				Debug.Log (string.Format ("{0}[{1}]: {2}", Title, VERSION, String));
 			}
 		}
+		protected static void Warning(string String, string Title = null) {
+			if (Title == null) {
+				Title = MOD;
+			} else {
+				Title = string.Format ("{0}({1})", MOD, Title);
+			}
+			Debug.LogWarning (string.Format ("{0}[{1}]: {2}", Title, VERSION, String));
+		}
 
-		private void OnDestroy() {
-			GameEvents.onGUIEditorToolbarReady.Remove (OnGUIEditorToolbarReady);
-			Log ("OnDestroy", true);
+		protected virtual void Awake() {
+			Log ("Awake");
+		}
+		protected virtual void Start() {
+			Log ("Start");
+		}
+		protected virtual void OnDestroy() {
+			Log ("OnDestroy");
 		}
 	}
 }

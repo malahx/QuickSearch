@@ -8,7 +8,7 @@
     <RootNamespace>QuickSearch</RootNamespace>
     <AssemblyName>QuickSearch</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <ReleaseVersion>1.20</ReleaseVersion>
+    <ReleaseVersion>2.00</ReleaseVersion>
     <Description>#### QuickSearch
 #### A plugin for Kerbal Space Program
 #### Copyright 2016 Malah</Description>
@@ -42,43 +42,39 @@
     </CustomCommands>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="UnityEngine">
-      <HintPath>..\lib\1.0.5.1028\UnityEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\lib\1.0.5.1028\Assembly-CSharp.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QS.cs" />
-    <Compile Include="QS_GUI.cs" />
+    <Compile Include="QS_Settings.cs" />
     <Compile Include="QS_Search.cs" />
-    <Compile Include="QS_Category.cs" />
-    <Compile Include="QS_Categorizer.cs" />
-    <Compile Include="QS_Quick.cs" />
-    <Compile Include="QS_Persistent.cs" />
+    <Compile Include="QS_RnD.cs" />
+    <Compile Include="QS.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <None Include="COPYING" />
-    <None Include="QuickSearch.version" />
+    <None Include="GameData\QuickSearch\Textures\delete.dds" />
     <None Include="README.md" />
+    <None Include="QuickSearch.version" />
+    <None Include="install.sh" />
+    <None Include="COPYING" />
     <None Include="GameData\QuickSearch\COPYING" />
     <None Include="GameData\QuickSearch\QuickSearch.version" />
     <None Include="GameData\QuickSearch\README.md" />
     <None Include="GameData\QuickSearch\Plugins\QuickSearch.dll" />
-    <None Include="icon.xcf" />
-    <None Include="GameData\QuickSearch\Textures\back.dds" />
-    <None Include="GameData\QuickSearch\Textures\bookmark.dds" />
-    <None Include="GameData\QuickSearch\Textures\delete.dds" />
-    <None Include="GameData\QuickSearch\Textures\icon.dds" />
-    <None Include="GameData\QuickSearch\Textures\iconSelected.dds" />
-    <None Include="GameData\QuickSearch\Plugins\QuickSearch2.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="GameData\" />
-    <Folder Include="GameData\QuickSearch\Textures\" />
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\lib\1.1.0.1172\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="KSPUtil">
+      <HintPath>..\lib\1.1.0.1172\KSPUtil.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <HintPath>..\lib\1.1.0.1172\System.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>..\lib\1.1.0.1172\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\lib\1.1.0.1172\UnityEngine.UI.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

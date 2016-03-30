@@ -18,8 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #### What is it?
 
-QuickSearch is a small plugin which adds the possibility to search parts and subassembly on the editor and on the tech tree.
-(Yet another parts search plugin ;))
+QuickSearch is a small plugin which adds the possibility to search parts on the tech tree.
 
 #### How to install it?
 
@@ -34,6 +33,12 @@ Unzip all files. Merge the new QuickSearch folder with the old folder which is i
 Delete the QuickSearch folder in your KSP/GameData folder.
 
 #### Changelog
+
+v2.00-pre1 - 2016.03.30
+* New: Deleted parts search functions from the editor,
+* New: Deleted category functions from the editor,
+* New: Deleted the tiny version of QuickSearch,
+* Fix: Compiled against KSP 1.1.0.1172
 
 v1.21 - 2016.02.08
 * Fix: Corrected GUIStyle which block popups.
@@ -94,7 +99,7 @@ v0.10 - 2015.01.02
 #### Links
 
 * http://forum.kerbalspaceprogram.com/threads/95168#QuickSearch
-* https://kerbalstuff.com/mod/472/QuickSearch
+* http://spacedock.info/mod/101/QuickSearch
 * http://kerbal.curseforge.com/ksp-mods/226668-quicksearch
 * https://github.com/malahx/QuickSearch
 * Tree Toppler: http://forum.kerbalspaceprogram.com/index.php?/topic/97033-
