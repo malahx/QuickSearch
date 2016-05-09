@@ -22,7 +22,7 @@ QuickSearch is a small plugin which adds an extension to the part search functio
 
 #### What is the search extension?
 
-By default on the config file, the search extension is enabled, and with it you can:
+By default, the search extension is enabled, and with it you can:
 * search with regex 				/ab/,
 * make a AND 						a&b,
 * make a OR 						a|b,
@@ -58,8 +58,8 @@ Delete the QuickSearch folder in your KSP/GameData folder.
 #### Changelog
 
 v3.00 - 2016.05.09
-* New: Added the search extension,
-* New: Enhenced the editor search,
+* New: Added some new search parameter,
+* New: Enhanced the editor search,
 * New: Added a GUI to edit the config (with the support of Stock and Blizzy Toolbar),
 * Fix: Compiled against KSP 1.1.2.1260
 
