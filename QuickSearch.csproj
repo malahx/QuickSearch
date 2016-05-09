@@ -8,7 +8,8 @@
     <RootNamespace>QuickSearch</RootNamespace>
     <AssemblyName>QuickSearch</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <ReleaseVersion>2.00</ReleaseVersion>
+    <ReleaseVersion>
+    </ReleaseVersion>
     <Description>#### QuickSearch
 #### A plugin for Kerbal Space Program
 #### Copyright 2016 Malah</Description>
@@ -47,6 +48,11 @@
     <Compile Include="QS_Search.cs" />
     <Compile Include="QS_RnD.cs" />
     <Compile Include="QS.cs" />
+    <Compile Include="QS_Editor.cs" />
+    <Compile Include="ToolbarWrapper.cs" />
+    <Compile Include="QS_ToolbarStock.cs" />
+    <Compile Include="QS_ToolbarBlizzy.cs" />
+    <Compile Include="QS_GUI.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -59,22 +65,29 @@
     <None Include="GameData\QuickSearch\QuickSearch.version" />
     <None Include="GameData\QuickSearch\README.md" />
     <None Include="GameData\QuickSearch\Plugins\QuickSearch.dll" />
+    <None Include="icon.xcf" />
+    <None Include="iconQS.xcf" />
+    <None Include="GameData\QuickSearch\Textures\BlizzyToolBar.dds" />
+    <None Include="GameData\QuickSearch\Textures\StockToolBar.dds" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\lib\1.1.0.1172\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\lib\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="KSPUtil">
-      <HintPath>..\lib\1.1.0.1172\KSPUtil.dll</HintPath>
+      <HintPath>..\lib\Managed\KSPUtil.dll</HintPath>
     </Reference>
     <Reference Include="System">
-      <HintPath>..\lib\1.1.0.1172\System.dll</HintPath>
+      <HintPath>..\lib\Managed\System.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>..\lib\1.1.0.1172\UnityEngine.dll</HintPath>
+      <HintPath>..\lib\Managed\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>..\lib\1.1.0.1172\UnityEngine.UI.dll</HintPath>
+      <HintPath>..\lib\Managed\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>..\lib\Managed\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

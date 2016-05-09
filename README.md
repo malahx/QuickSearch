@@ -18,7 +18,30 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #### What is it?
 
-QuickSearch is a small plugin which adds the possibility to search parts on the tech tree.
+QuickSearch is a small plugin which adds an extension to the part search function on the editor, it also adds a search parts on the tech tree.
+
+#### What is the search extension?
+
+By default on the config file, the search extension is enabled, and with it you can:
+* search with regex 				/ab/,
+* make a AND 						a&b,
+* make a OR 						a|b,
+* make a NOT 						!a,
+* search a word begin 				(ab or "ab,
+* search a word end 				ab) or ab",
+* search a word 					(ab) or "ab",
+* search only the tag				%ab,
+* search only the name 				;ab,
+* search only the title 			:ab,
+* search only the description		-ab,
+* search only the author			,ab,
+* search only the manufacturer		?ab,
+* search only the part size			.ab,
+* search only the resources			+ab,
+* search only the tech required		@ab,
+* search only the module			_ab,
+a and b are the search example, all the shortcut can be edited on the config file.
+At this time, you can only cumulate AND, OR, NOT, words begin/end/full, but not with others shortcut.
 
 #### How to install it?
 
@@ -33,6 +56,16 @@ Unzip all files. Merge the new QuickSearch folder with the old folder which is i
 Delete the QuickSearch folder in your KSP/GameData folder.
 
 #### Changelog
+
+v3.00 - 2016.05.08
+* New: Added the search extension,
+* New: Enhenced the editor search,
+* New: Added a GUI to edit the config (with the support of Stock and Blizzy Toolbar),
+* Fix: Compiled against KSP 1.1.2.1260
+
+v2.01 - 2016.04.23
+* Fix: Enhanced the dimension of the search bar,
+* Fix: Compiled against KSP 1.1.0.1230
 
 v2.00-pre1 - 2016.03.30
 * New: Deleted parts search functions from the editor,
@@ -88,6 +121,7 @@ v0.10 - 2015.01.02
 * to Magico13 for his Tree Toppler,
 * to BlackNecro for his awesome PartCatalog,
 * to Crzyrndm for his Filter Extensions,
+* to blizzy for his Toolbar mod, 
 * to Banbury for his Part Search,
 * to MrHappyFace for his PartSearch,
 * to Konraden for his Part Search Plugin,
@@ -98,13 +132,14 @@ v0.10 - 2015.01.02
 
 #### Links
 
-* http://forum.kerbalspaceprogram.com/threads/95168#QuickSearch
+* http://forum.kerbalspaceprogram.com/index.php?/topic/85834-1
 * http://spacedock.info/mod/101/QuickSearch
 * http://kerbal.curseforge.com/ksp-mods/226668-quicksearch
 * https://github.com/malahx/QuickSearch
 * Tree Toppler: http://forum.kerbalspaceprogram.com/index.php?/topic/97033-
 * PartCatalog: http://forum.kerbalspaceprogram.com/threads/35018
 * Filter Extensions: http://forum.kerbalspaceprogram.com/threads/104231
+* Toolbar: http://forum.kerbalspaceprogram.com/threads/60863
 * Part Search: http://forum.kerbalspaceprogram.com/threads/95352
 * PartSearch: http://forum.kerbalspaceprogram.com/threads/102375
 * Part Search Plugin: http://forum.kerbalspaceprogram.com/threads/32983

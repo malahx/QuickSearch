@@ -29,7 +29,6 @@ namespace QuickSearch {
 
 		public static QRnD Instance;
 
-		private GUIStyle TextField;
 		private GUIStyle ButtonStyle;
 
 		public bool Ready = false;
@@ -45,29 +44,33 @@ namespace QuickSearch {
 
 		protected override void Awake() {
 			if (HighLogic.LoadedScene != GameScenes.SPACECENTER) {
-				Warning ("This mod works only on the SpaceCenter. Destroy.");
+				Warning ("The RnD search function works only on the SpaceCenter. Destroy.", "QRnD");
 				Destroy (this);
 				return;
 			}
+			QStockToolbar.ResetScenes ();
 			if (HighLogic.CurrentGame.Mode != Game.Modes.CAREER && HighLogic.CurrentGame.Mode != Game.Modes.SCIENCE_SANDBOX) {
-				Warning ("This mod works only on a Career or on a Science gamemode. Destroy.");
+				Warning ("The RnD search function works only on a Career or on a Science gamemode. Destroy.", "QRnD");
 				Destroy (this);
 				return;
 			}
 			if (Instance != null) {
-				Warning ("There's already an Instance of " + MOD +". Destroy.");
+				Warning ("There's already an Instance of " + MOD +". Destroy.", "QRnD");
 				Destroy (this);
 				return;
 			}
 			Instance = this;
+			QSettings.Instance.Load ();
+			if (!QSettings.Instance.RnDSearch) {
+				Warning ("The RnD search function is disabled. Destroy.", "QRnD");
+				Destroy (this);
+				return;
+			}
+			base.Awake ();
 			Log ("Awake", "QRnD");
 		}
 
 		protected override void Start() {
-			TextField = new GUIStyle(HighLogic.Skin.textField);
-			TextField.stretchWidth = true;
-
-			TextField.alignment = TextAnchor.MiddleCenter;
 			ButtonStyle = new GUIStyle(HighLogic.Skin.button);
 			ButtonStyle.alignment = TextAnchor.MiddleCenter;
 			ButtonStyle.padding = new RectOffset (0, 0, 0, 0);
@@ -75,6 +78,7 @@ namespace QuickSearch {
 			DeleteTexture = GameDatabase.Instance.GetTexture (DeleteTexturePath, false);
 			GameEvents.onGUIRnDComplexSpawn.Add (RnDComplexSpawn);
 			GameEvents.onGUIRnDComplexDespawn.Add (RnDComplexDespawn);
+			base.Start ();
 			Log ("Start", "QRnD");
 		}
 
@@ -93,22 +97,23 @@ namespace QuickSearch {
 		protected override void OnDestroy() {
 			GameEvents.onGUIRnDComplexSpawn.Remove (RnDComplexSpawn);
 			GameEvents.onGUIRnDComplexDespawn.Remove (RnDComplexDespawn);
+			base.OnDestroy ();
 			Log ("OnDestroy", "QRnD");
 		}
 
-		internal void OnGUI() {
-			if (!Ready) {
+		protected override void OnGUI() {
+			base.OnGUI ();
+			if (!Ready || !QSettings.Instance.RnDSearch) {
 				return;
 			}
 			GUI.skin = HighLogic.Skin;
 			GUILayout.BeginArea (RectRDSearch);
 			GUILayout.BeginVertical ();
 			GUILayout.BeginHorizontal ();
-			string _Text = GUILayout.TextField (QSearch.Text, TextField,GUILayout.Height(20));
-			if (GUILayout.Button (new GUIContent (DeleteTexture, "Clear the search bar"), ButtonStyle,GUILayout.Height(20),GUILayout.Width(20))) {
+			string _Text = GUILayout.TextField (QSearch.Text, TextField,GUILayout.Height(30));
+			if (GUILayout.Button (new GUIContent (DeleteTexture, "Clear the search bar"), ButtonStyle,GUILayout.Height(30),GUILayout.Width(30))) {
 				_Text = string.Empty;
 			}
-			_Text = CleanInput(_Text);
 			if (_Text != QSearch.Text) {
 				QSearch.Text = _Text;
 				if (_Text == string.Empty) {
@@ -120,11 +125,6 @@ namespace QuickSearch {
 			GUILayout.EndHorizontal ();
 			GUILayout.EndVertical ();
 			GUILayout.EndArea ();
-		}
-
-		private string CleanInput(string strIn) {
-			// Replace invalid characters with empty strings. 
-			return Regex.Replace(strIn, @"[^\w\.@-|&/\(\)\[\]\+?,;:/\*µ\^\$=\ ""]", string.Empty); 
 		}
 
 		internal static void Find(bool clean = false) {

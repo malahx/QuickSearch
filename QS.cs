@@ -24,10 +24,15 @@ namespace QuickSearch {
 	[KSPAddon(KSPAddon.Startup.SpaceCentre, false)]
 	public partial class QRnD : QuickSearch { }
 
+	[KSPAddon(KSPAddon.Startup.EditorAny, false)]
+	public partial class QEditor : QuickSearch { }
+
 	public partial class QuickSearch : MonoBehaviour {
 
 		protected readonly static string VERSION = Assembly.GetAssembly(typeof(QuickSearch)).GetName().Version.Major + "." + Assembly.GetAssembly(typeof(QuickSearch)).GetName().Version.Minor + Assembly.GetAssembly(typeof(QuickSearch)).GetName().Version.Build;
 		protected readonly static string MOD = Assembly.GetAssembly(typeof(QuickSearch)).GetName().Name;
+
+		[KSPField(isPersistant = true)] private static QBlizzyToolbar BlizzyToolbar;
 
 		protected static void Log(string String, string Title = null) {
 			if (Title == null) {
@@ -49,12 +54,19 @@ namespace QuickSearch {
 		}
 
 		protected virtual void Awake() {
+			if (BlizzyToolbar == null) BlizzyToolbar = new QBlizzyToolbar ();
+			TextField = new GUIStyle(HighLogic.Skin.textField);
+			TextField.stretchWidth = true;
+			TextField.stretchHeight = true;
+			TextField.alignment = TextAnchor.MiddleCenter;
 			Log ("Awake");
 		}
 		protected virtual void Start() {
+			if (BlizzyToolbar != null) BlizzyToolbar.Init ();
 			Log ("Start");
 		}
 		protected virtual void OnDestroy() {
+			if (BlizzyToolbar != null) BlizzyToolbar.Destroy ();
 			Log ("OnDestroy");
 		}
 	}
