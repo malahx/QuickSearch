@@ -81,16 +81,11 @@ namespace QuickSearch {
 			PartCategorizer.Instance.searchField.onEndEdit.AddListener (new UnityAction<string> (SearchField_OnEndEdit));
 			PartCategorizer.Instance.searchField.onValueChange.AddListener (new UnityAction<string> (SearchField_OnValueChange));
 			PartCategorizer.Instance.searchField.GetComponentCached<Image> (ref searchImage);
-			GameSettings.Editor_partSearch.inputLockMask = QSettings.idSearchKey;
-			InputLockManager.SetControlLock ((ControlTypes)QSettings.idSearchKey, MOD + "SearchKey");
 			setSearchFilter ();
 			Log ("Start", "QEditor");
 		}
 
 		private void Update() {
-			if (GameSettings.Editor_partSearch.IsUnlocked ()) {
-				return;
-			}
 			if (!isReady) {
 				return;
 			}
@@ -101,7 +96,6 @@ namespace QuickSearch {
 
 		protected override void OnDestroy() {
 			base.OnDestroy ();
-			InputLockManager.RemoveControlLock (MOD + "SearchKey");
 			Log ("OnDestroy", "QEditor");
 		}
 
@@ -120,6 +114,7 @@ namespace QuickSearch {
 			}
 			setSearchFilter();
 			EditorPartList.Instance.Refresh (EditorPartList.State.PartSearch);
+			InputLockManager.SetControlLock (ControlTypes.KEYBOARDINPUT, MOD + "-KeyBoard");
 			Log ("InitSearch", "QEditor");
 		}
 
@@ -133,9 +128,7 @@ namespace QuickSearch {
 		}
 
 		private void SearchField_OnEndEdit(string s) {
-			if (!isReady) {
-				return;
-			}
+			InputLockManager.RemoveControlLock (MOD + "-KeyBoard");
 			Log ("SearchField_OnEndEdit", "QEditor");
 		}
 

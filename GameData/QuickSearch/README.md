@@ -57,6 +57,10 @@ Delete the QuickSearch folder in your KSP/GameData folder.
 
 #### Changelog
 
+v3.01 - 2016.05.10
+* Fix: Corrected the search key lock which block the camera,
+* Fix: Added a Keyboard lock when the search bar is active.
+
 v3.00 - 2016.05.09
 * New: Added some new search parameter,
 * New: Enhanced the editor search,
