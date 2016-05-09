@@ -57,7 +57,7 @@ Delete the QuickSearch folder in your KSP/GameData folder.
 
 #### Changelog
 
-v3.00 - 2016.05.08
+v3.00 - 2016.05.09
 * New: Added the search extension,
 * New: Enhenced the editor search,
 * New: Added a GUI to edit the config (with the support of Stock and Blizzy Toolbar),
