@@ -130,13 +130,19 @@ namespace QuickSearch {
 		internal static void Find(bool clean = false) {
 			List<RDNode> _nodes = RDController.Instance.nodes;
 			foreach (RDNode _node in _nodes) {
-				RDTech _rdTech = _node.tech;
-				UIStateButton _button = _node.graphics.button;
-				if (!clean && _rdTech.partsAssigned.Find (aPart => QSearch.FindPart (aPart)) != null) {
-					_button.Image.color = new Color (1f, 0f, 0f);
-					continue;
-				}
-				_button.Image.color = new Color (1f, 1f, 1f);
+                RDTech _rdTech = _node.tech;
+
+                if (_node.graphics != null)
+                {
+                    UIStateButton _button = _node.graphics.button;
+
+                    if (!clean && _rdTech.partsAssigned.Find(aPart => QSearch.FindPart(aPart)) != null)
+                    {
+                        _button.Image.color = new Color(1f, 0f, 0f);
+                        continue;
+                    }
+                    _button.Image.color = new Color(1f, 1f, 1f);   
+                }  
 			}
 			Log ("Find: " + QSearch.Text, "QRnD");
 		}
