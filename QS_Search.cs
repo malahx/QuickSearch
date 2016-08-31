@@ -20,8 +20,6 @@ using KSP.UI.Screens;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using UnityEngine;
-using UnityEngine.UI;
 
 namespace QuickSearch {
 	internal class QSearch : QuickSearch {
@@ -68,7 +66,8 @@ namespace QuickSearch {
 			PartCategorizer.Category _filter = FilterByFunctions;
 			List<PartCategorizer.Category> _subcategories = _filter.subcategories;
 			bool _val = false;
-			foreach (PartCategorizer.Category _subcategory in _subcategories) {
+			for (int _i = _subcategories.Count - 1; _i >= 0; --_i) {
+				PartCategorizer.Category _subcategory = _subcategories[_i];
 				if (_subcategory.exclusionFilter == null) {
 					continue;
 				}
@@ -101,7 +100,8 @@ namespace QuickSearch {
 			if (part.resourceInfos.Count > 0 && searchExtension(partInfos.RESOURCEINFOS, search)) {
 				_partinfo += part.resourceInfo + " ";
 				List<AvailablePart.ResourceInfo> _resourceInfos = part.resourceInfos;
-				foreach (AvailablePart.ResourceInfo _resourceInfo in _resourceInfos) {
+				for (int _i = _resourceInfos.Count - 1; _i >= 0; --_i) {
+					AvailablePart.ResourceInfo _resourceInfo = _resourceInfos[_i];
 					_partinfo += _resourceInfo.resourceName + " ";
 				}
 			}
@@ -110,7 +110,8 @@ namespace QuickSearch {
 			}
 			if (part.moduleInfos.Count > 0 && searchExtension(partInfos.MODULE, search)) {
 				List<AvailablePart.ModuleInfo> _moduleInfos = part.moduleInfos;
-				foreach (AvailablePart.ModuleInfo _moduleInfo in _moduleInfos) {
+				for (int _i = _moduleInfos.Count - 1; _i >= 0; --_i) {
+					AvailablePart.ModuleInfo _moduleInfo = _moduleInfos[_i];
 					_partinfo += _moduleInfo.moduleName + " ";
 				}
 			}
@@ -143,7 +144,7 @@ namespace QuickSearch {
 				return false;
 			}
 			string _Text = Text;
-			if (QSettings.Instance.enableSearchExtension && _Text.StartsWith(QSettings.Instance.searchRegex) && _Text.EndsWith((string)QSettings.Instance.searchRegex)) {
+			if (QSettings.Instance.enableSearchExtension && _Text.StartsWith(QSettings.Instance.searchRegex, StringComparison.Ordinal) && _Text.EndsWith((string)QSettings.Instance.searchRegex, StringComparison.Ordinal)) {
 				try {
 					_Text = _Text.Substring(1, _Text.Length -2);
 					return Regex.IsMatch (_partinfo, _Text);
@@ -162,12 +163,14 @@ namespace QuickSearch {
 			bool _Return = false;
 			string[] _OrSplits = search.ToLower ().Split (QSettings.Instance.searchOR.ToCharArray (0, 1));
 			Infos = Infos.ToLower ();
-			foreach (string _OrSplit in _OrSplits) {
+			for (int _i = _OrSplits.Length - 1; _i >= 0; --_i) {
+				string _OrSplit = _OrSplits[_i];
 				string[] _AndSplits = _OrSplit.Split(QSettings.Instance.searchAND.ToCharArray (0, 1));
 				if (_AndSplits.Length > 1) {
 					bool _AndReturn = true;
-					foreach (string _AndSplit in _AndSplits) {
-						if (!_AndSplit.StartsWith (QSettings.Instance.searchNOT)) {
+					for (int _j = _AndSplits.Length - 1; _j >= 0; --_j) {
+						string _AndSplit = _AndSplits[_j];
+						if (!_AndSplit.StartsWith (QSettings.Instance.searchNOT, StringComparison.Ordinal)) {
 							_AndReturn = _AndReturn && Infos.Contains (searchExtension (_AndSplit));
 						} else {
 							_AndReturn = _AndReturn && !Infos.Contains (searchExtension (_AndSplit));
@@ -178,7 +181,7 @@ namespace QuickSearch {
 						break;
 					}
 				} else {
-					if (!_OrSplit.StartsWith (QSettings.Instance.searchNOT)) {
+					if (!_OrSplit.StartsWith (QSettings.Instance.searchNOT, StringComparison.Ordinal)) {
 						if (Infos.Contains (searchExtension (_OrSplit))) {
 							_Return = true;
 							break;
@@ -220,69 +223,69 @@ namespace QuickSearch {
 		}
 
 		private static bool StartsWith(string search, string pre) {
-			return !string.IsNullOrEmpty(pre) && search.StartsWith (pre);
+			return !string.IsNullOrEmpty(pre) && search.StartsWith (pre, StringComparison.Ordinal);
 		}
 
 		private static bool EndsWith(string search, string pre) {
-			return !string.IsNullOrEmpty(pre) && search.EndsWith (pre);
+			return !string.IsNullOrEmpty(pre) && search.EndsWith (pre, StringComparison.Ordinal);
 		}
 		private static bool searchExtension(partInfos pInfo, string search) {
 			if (QSettings.Instance.enableSearchExtension && search.Length > 1) {
-				if (search.StartsWith (QSettings.Instance.searchTag)) {
+				if (search.StartsWith (QSettings.Instance.searchTag, StringComparison.Ordinal)) {
 					if (pInfo == partInfos.TAG) {
 						return true;
 					}
 					return false;
 				}
-				if (search.StartsWith (QSettings.Instance.searchName)) {
+				if (search.StartsWith (QSettings.Instance.searchName, StringComparison.Ordinal)) {
 					if (pInfo == partInfos.NAME) {
 						return true;
 					}
 					return false;
 				}
-				if (search.StartsWith (QSettings.Instance.searchTitle)) {
+				if (search.StartsWith (QSettings.Instance.searchTitle, StringComparison.Ordinal)) {
 					if (pInfo == partInfos.TITLE) {
 						return true;
 					}
 					return false;
 				}
-				if (search.StartsWith (QSettings.Instance.searchDescription)) {
+				if (search.StartsWith (QSettings.Instance.searchDescription, StringComparison.Ordinal)) {
 					if (pInfo == partInfos.DESCRIPTION) {
 						return true;
 					}
 					return false;
 				}
-				if (search.StartsWith (QSettings.Instance.searchAuthor)) {
+				if (search.StartsWith (QSettings.Instance.searchAuthor, StringComparison.Ordinal)) {
 					if (pInfo == partInfos.AUTHOR) {
 						return true;
 					}
 					return false;
 				}
-				if (search.StartsWith (QSettings.Instance.searchManufacturer)) {
+				if (search.StartsWith (QSettings.Instance.searchManufacturer, StringComparison.Ordinal)) {
 					if (pInfo == partInfos.MANUFACTURER) {
 						return true;
 					}
 					return false;
 				}
-				if (search.StartsWith (QSettings.Instance.searchPartSize)) {
+				if (search.StartsWith (QSettings.Instance.searchPartSize, StringComparison.Ordinal)) {
 					if (pInfo == partInfos.PARTSIZE) {
 						return true;
 					}
 					return false;
 				}
-				if (search.StartsWith (QSettings.Instance.searchResourceInfos)) {
+				if (search.StartsWith (QSettings.Instance.searchResourceInfos, StringComparison.Ordinal)) {
 					if (pInfo == partInfos.RESOURCEINFOS) {
 						return true;
 					}
 					return false;
 				}
-				if (search.StartsWith (QSettings.Instance.searchTechRequired)) {
+				if (search.StartsWith (QSettings.Instance.searchTechRequired, StringComparison.Ordinal)) {
 					if (pInfo == partInfos.TECHREQUIRED) {
 						return true;
 					}
 					return false;
 				}
-				if (search.StartsWith (QSettings.Instance.searchModule)) {
+				if (search.StartsWith (QSettings.Instance.searchModule, StringComparison.Ordinal)) {
 					if (pInfo == partInfos.MODULE) {
 						return true;
 					}

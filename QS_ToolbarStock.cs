@@ -17,8 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 using KSP.UI.Screens;
-using System;
-using System.Collections;
 using UnityEngine;
 
 namespace QuickSearch {

@@ -24,21 +24,21 @@ QuickSearch is a small plugin which adds an extension to the part search functio
 
 By default, the search extension is enabled, and with it you can:
 * search with regex 				/ab/,
-* make a AND 						a&b,
-* make a OR 						a|b,
-* make a NOT 						!a,
+* make a AND 					a&b,
+* make a OR 					a|b,
+* make a NOT 					!a,
 * search a word begin 				(ab or "ab,
 * search a word end 				ab) or ab",
-* search a word 					(ab) or "ab",
+* search a word 				(ab) or "ab",
 * search only the tag				%ab,
 * search only the name 				;ab,
 * search only the title 			:ab,
-* search only the description		-ab,
+* search only the description			-ab,
 * search only the author			,ab,
-* search only the manufacturer		?ab,
+* search only the manufacturer			?ab,
 * search only the part size			.ab,
 * search only the resources			+ab,
-* search only the tech required		@ab,
+* search only the tech required			@ab,
 * search only the module			_ab,
 a and b are the search example, all the shortcut can be edited on the config file.
 At this time, you can only cumulate AND, OR, NOT, words begin/end/full, but not with others shortcut.
@@ -56,6 +56,14 @@ Unzip all files. Merge the new QuickSearch folder with the old folder which is i
 Delete the QuickSearch folder in your KSP/GameData folder.
 
 #### Changelog
+
+v3.03 - 2016.08.30
+* Fix: Corrected the reset of the Blizzy toolbar button,
+* Fix: Corrected a bug with mods like Fog of Tech (by linuxgurugamer),
+* Fix: Deleted useless libraries,
+* Fix: Deleted linq library,
+* Fix: Deleted foreach functions,
+* Fix: Minors tweaks.
 
 v3.02 - 2016.06.23
 * Fix: Compiled against KSP 1.1.3.1289
@@ -125,6 +133,7 @@ v0.10 - 2015.01.02
 
 * to Borisbee to have requested this mod,
 * to inigma and Yemo to have think of the tech tree part search,
+* to linuxgurugamer for his help,
 * to Magico13 for his Tree Toppler,
 * to BlackNecro for his awesome PartCatalog,
 * to Crzyrndm for his Filter Extensions,

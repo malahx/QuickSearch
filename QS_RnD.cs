@@ -17,12 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 using KSP.UI;
 using KSP.UI.Screens;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace QuickSearch {
 	public partial class QRnD {
@@ -129,15 +125,12 @@ namespace QuickSearch {
 
 		internal static void Find(bool clean = false) {
 			List<RDNode> _nodes = RDController.Instance.nodes;
-			foreach (RDNode _node in _nodes) {
+			for (int _i = _nodes.Count - 1; _i >= 0; --_i) {
+				RDNode _node = _nodes[_i];
                 RDTech _rdTech = _node.tech;
-
-                if (_node.graphics != null)
-                {
+                if (_node.graphics != null) {
                     UIStateButton _button = _node.graphics.button;
-
-                    if (!clean && _rdTech.partsAssigned.Find(aPart => QSearch.FindPart(aPart)) != null)
-                    {
+                    if (!clean && _rdTech.partsAssigned.Find(aPart => QSearch.FindPart(aPart)) != null) {
                         _button.Image.color = new Color(1f, 0f, 0f);
                         continue;
                     }

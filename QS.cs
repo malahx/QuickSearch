@@ -16,7 +16,6 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>. 
 */
 
-using System;
 using System.Reflection;
 using UnityEngine;
 
@@ -29,8 +28,8 @@ namespace QuickSearch {
 
 	public partial class QuickSearch : MonoBehaviour {
 
-		protected readonly static string VERSION = Assembly.GetAssembly(typeof(QuickSearch)).GetName().Version.Major + "." + Assembly.GetAssembly(typeof(QuickSearch)).GetName().Version.Minor + Assembly.GetAssembly(typeof(QuickSearch)).GetName().Version.Build;
-		protected readonly static string MOD = Assembly.GetAssembly(typeof(QuickSearch)).GetName().Name;
+		protected readonly static string VERSION = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+		protected readonly static string MOD = Assembly.GetExecutingAssembly().GetName().Name;
 
 		[KSPField(isPersistant = true)] private static QBlizzyToolbar BlizzyToolbar;
 
