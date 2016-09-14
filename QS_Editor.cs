@@ -67,7 +67,7 @@ namespace QuickSearch {
 			base.Start ();
 			Func<AvailablePart, bool> _criteria = (_aPart) => QSearch.FindPart(_aPart);
 			searchFilterParts = new EditorPartListFilter<AvailablePart> (MOD, _criteria);
-			PartCategorizer.Instance.searchField.onValueChange.RemoveAllListeners ();
+			PartCategorizer.Instance.searchField.onValueChanged.RemoveAllListeners ();
 			PointerClickHandler _pointerClickSearch = null;
 			PartCategorizer.Instance.searchField.GetComponentCached<PointerClickHandler> (ref _pointerClickSearch);
 			if (_pointerClickSearch != null) {
@@ -75,7 +75,7 @@ namespace QuickSearch {
 				_pointerClickSearch.onPointerClick.AddListener (new UnityAction<PointerEventData> (SearchField_OnClick));
 			}
 			PartCategorizer.Instance.searchField.onEndEdit.AddListener (new UnityAction<string> (SearchField_OnEndEdit));
-			PartCategorizer.Instance.searchField.onValueChange.AddListener (new UnityAction<string> (SearchField_OnValueChange));
+			PartCategorizer.Instance.searchField.onValueChanged.AddListener (new UnityAction<string> (SearchField_OnValueChange));
 			PartCategorizer.Instance.searchField.GetComponentCached<Image> (ref searchImage);
 			setSearchFilter ();
 			Log ("Start", "QEditor");

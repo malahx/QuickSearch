@@ -57,6 +57,9 @@ Delete the QuickSearch folder in your KSP/GameData folder.
 
 #### Changelog
 
+v3.04 - 2016.09.14
+* Compiled against KSP 1.2.0.1473
+
 v3.03 - 2016.08.30
 * Fix: Corrected the reset of the Blizzy toolbar button,
 * Fix: Corrected a bug with mods like Fog of Tech (by linuxgurugamer),
