@@ -57,6 +57,9 @@ Delete the QuickSearch folder in your KSP/GameData folder.
 
 #### Changelog
 
+v3.05 - 2016.10.14
+* Compiled against KSP 1.2.0.1586
+
 v3.04 - 2016.09.14
 * Compiled against KSP 1.2.0.1473
 
